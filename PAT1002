@@ -1,0 +1,41 @@
+#include <stdio.h>
+char *p;
+char *function(int n);
+
+int main() {
+
+    int count=0;
+    char ch;
+
+    while((ch=getchar())!='\n'){
+        count+=ch-'0';
+    }
+
+    if(count>=100)
+        printf("%s %s %s",function(count/100),function(count/10%10),function(count%10));
+    else if(count>=10)
+        printf("%s %s",function(count/10),function(count%10));
+    else
+        printf("%s",function(count));
+
+    return 0;
+}
+
+char *function(int n){
+
+    //char *p;
+
+    switch(n){
+        case 0:p="ling";break;
+        case 1:p="yi";break;
+        case 2:p="er";break;
+        case 3:p="san";break;
+        case 4:p="si";break;
+        case 5:p="wu";break;
+        case 6:p="liu";break;
+        case 7:p="qi";break;
+        case 8:p="ba";break;
+        case 9:p="jiu";break;
+    }
+    return p;
+}
