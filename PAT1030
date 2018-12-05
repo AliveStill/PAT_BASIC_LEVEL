@@ -1,40 +1,46 @@
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
-char uppercase(char ch){
-	if(ch>='a'&&ch<='z'){
-		return ch-32;
+
+void sort(int *a,int n){//冒泡排序 
+	int i,ex_number;
+	bool flag=true;
+	
+	while(flag){
+		flag=false;
+		for(i=0;i<n-1;i++){
+			if(a[i]>a[i+1]){
+				ex_number=a[i];
+				a[i]=a[i+1];
+				a[i+1]=ex_number;
+				flag=true;
+			}
+		}
 	}
-	else return ch;
 }
 
-int main(void){
-	char a[1000];
-	char b[1000];
-	char c[1000];
-	int i,j=0;
-	int count=0;
-	
-	scanf("%s%s",a,b);
-	//printf("%s\n%s",a,b);
-	for(i=0;i<strlen(a);i++){
-	label_1:if(a[i]==b[j]){
-			j++;
-			continue;
-		}
-		else{
-			int j;
-			for(j=0;j<strlen(c);j++){//检查数组c中是否有与目标元素重复的元素 
-				if(uppercase(a[i])==c[j]){
-					i++;
-					goto label_1;
-				}
-			}
-			c[count++]=uppercase(a[i]);
+int judge(int *a,int m,int n){
+	int i;
+	for(i=0;i<m;i++){
+		if(a[i]*m>a[n-1]){
+			break;
 		}
 	}
-	c[count]='\0';
+	return i;
+}
+
+
+int main(void){
+	int i,j,k;
+	int n,m;
+	int *a;
 	
-	printf("%s",c);
-	
-} 
+	scanf("%d%d",&n,&m);
+	a=(int *)malloc(sizeof(int)*n);
+	for(i=0;i<n;i++){
+		scanf("%d",&(a[i]));
+	}
+	sort(a,n);
+	printf("%d",n-judge(a,m,n));	
+}
