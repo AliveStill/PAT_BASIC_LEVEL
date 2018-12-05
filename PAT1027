@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+int main() {
+    int n;
+    int i,j,k,count;
+    int a=0,b;
+    char ch;
+
+    scanf("%d",&n);
+    getchar();
+    scanf("%c",&ch);
+    for(i=1;2*i*i-1<=n;i++){//打印前几行
+        ;
+    }
+    i--;
+    count=n-(2*i*i-1);
+    for(j=i;j>0;j--){
+        for(b=0;b<a;b++){
+            printf(" ");
+        }
+        a++;
+        for(k=0;k<2*j-1;k++){
+            printf("%c",ch);
+        }
+        putchar('\n');
+    }
+    a-=2;
+    for(j=0;j<i-1;j++){
+        for(b=0;b<a;b++){
+            printf(" ");
+        }
+        a--;
+        for(k=0;k<3+j*2;k++){
+            printf("%c",ch);
+        }
+        putchar('\n');
+    }
+    printf("%d",count);
+    return 0;
+}
