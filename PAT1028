@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+struct people{
+    char name[6];
+    int year,month,day;
+} peoples[10000];
+
+void sort(struct people *sort_people,int n);
+
+int main() {
+
+    int i,j;
+    int n;
+    char ch;
+    int count=0,unvaild=0;//记录有效数值的个数；
+
+
+    scanf("%d",&n);
+    getchar();
+    for(i=0;i<n-unvaild;i++){
+        count++;
+        j=0;
+        while((ch=getchar())!=' '){
+            peoples[i].name[j++]=ch;
+        }
+        peoples[i].name[j]='\0';
+        scanf("%d",&(peoples[i].year));
+        getchar();
+        scanf("%d",&(peoples[i].month));
+        getchar();
+        scanf("%d",&(peoples[i].day));
+        if((peoples[i].year<1814)||
+           (peoples[i].year==1814&&peoples[i].month<9)||
+           (peoples[i].year==1814&&peoples[i].month==9&&peoples[i].day<6)){
+            i--;
+            unvaild++;
+            count--;
+        }
+                if((peoples[i].year>2014)||
+           (peoples[i].year==2014&&peoples[i].month>9)||
+           (peoples[i].year==2014&&peoples[i].month==9&&peoples[i].day>6)){
+            i--;
+            unvaild++;
+            count--;
+        }
+        if(getchar()==EOF){
+            break;
+        }
+    }//读入样本数据
+
+    sort(peoples,count);
+
+    if(count==0){
+        printf("0");
+    }
+    else{
+        printf("%d",count);
+        printf(" %s %s",peoples[0].name,peoples[count-1].name);
+    }
+    return 0;
+}
+void sort(struct people *sort_people,int n){
+    int i;
+    bool flag=true;
+    struct people replace;
+    while(flag){
+        flag=false;
+        for(i=0;i<n-1;i++){
+            if((sort_people[i].year>sort_people[i+1].year)||
+               ((sort_people[i].year==sort_people[i+1].year)&&
+                (sort_people[i].month>sort_people[i+1].month))||
+               ((sort_people[i].year==sort_people[i+1].year)&&
+                (sort_people[i].month==sort_people[i+1].month)&&(
+                        sort_people[i].day>sort_people[i+1].day))){
+                replace=sort_people[i];
+                sort_people[i]=sort_people[i+1];
+                sort_people[i+1]=replace;
+                flag=true;
+            }
+        }
+    }
+}
