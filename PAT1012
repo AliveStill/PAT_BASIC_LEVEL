@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+int main() {
+    long long int a[10][3];
+    int n,i;
+    char *p1="true",*p2="false";
+
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+        scanf("%lld%lld%lld",&a[i][0],&a[i][1],&a[i][2]);
+
+    for(i=0;i<n;i++){
+        if(i==0){
+            if(a[i][0]+a[i][1]>a[i][2])
+                printf("Case #%d: %s",i+1,p1);
+            else
+                printf("Case #%d: %s",i+1,p2);
+        }
+        else{
+            if(a[i][0]+a[i][1]>a[i][2])
+                printf("\nCase #%d: %s",i+1,p1);
+            else
+                printf("\nCase #%d: %s",i+1,p2);
+        }
+    }
+    return 0;
+}
