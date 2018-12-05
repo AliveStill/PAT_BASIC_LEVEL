@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+int main() {
+    int n,i,j,k;
+
+    scanf("%d",&n);
+    if(n<=9)
+        for(i=1;i<n+1;i++)
+            printf("%d",i);
+    else if(n<100){
+        for(i=0;i<n/10;i++)
+            printf("S");
+        for(j=1;j<n%10+1;j++)
+            printf("%d",j);//经过分析得知这种方法包含个位为0的情况
+    }
+    else{
+        for(i=0;i<n/100;i++)
+            printf("B");
+        for(j=0;j<n/10%10;j++)
+            printf("S");
+        for(k=1;k<n%10+1;k++)
+            printf("%d",k);
+    }
+
+    return 0;
+}
