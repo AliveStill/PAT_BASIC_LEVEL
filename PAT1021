@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+int main() {
+    int m,n;
+    char ch;
+    int a[10]={0,};
+    int i;
+    int flag=0;
+
+    while((ch=getchar())!=EOF){
+        switch(ch){
+            case '0':a[0]++;break;
+            case '1':a[1]++;break;
+            case '2':a[2]++;break;
+            case '3':a[3]++;break;
+            case '4':a[4]++;break;
+            case '5':a[5]++;break;
+            case '6':a[6]++;break;
+            case '7':a[7]++;break;
+            case '8':a[8]++;break;
+            case '9':a[9]++;break;
+        }
+    }
+
+    for(i=0;i<10;i++){
+        if(a[i]>0&&flag==0){
+            printf("%d:%d",i,a[i]);
+            flag=1;
+        }
+        else if(a[i]>0&&flag!=0){
+            printf("\n%d:%d",i,a[i]);
+        }
+    }
+
+
+    return 0;
+}
