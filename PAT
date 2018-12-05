@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+struct grade_s{
+	int grade;
+	int label;
+};
+
+int cmp(const void *a,const void *b){
+	return ((*(struct grade_s *)b).grade>(*(struct grade_s *)a).grade)?1:-1;
+}
+
+int main(void){
+	struct grade_s *a;
+	int n;
+	int i;
+	int grades;
+	
+	scanf("%d",&n);
+	a=(struct grade_s *)malloc(sizeof(struct grade_s)*n);
+	for(i=0;i<n;i++){
+		a[i].grade=0;
+		a[i].label=i+1; 
+	}
+	while(scanf("%d%d",&i,&grades)!=EOF){
+		a[i-1].grade+=grades;
+	}
+	qsort(a,n,sizeof(struct grade_s),cmp);
+	printf("%d %d",a[0].label,a[0].grade);
+}
