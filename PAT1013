@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <math.h>
+
+int main(void) {
+    int m,n;
+    int i,j;
+    int count=0,count_x=0;
+    int *a;
+    bool flag;
+
+    scanf("%d%d",&m,&n);
+    for(i=0;i<n;i++)
+        a=(int *)malloc(sizeof(int)*n);//分配n个素数的内存空间
+
+    a[0]=2;
+    for(i=3;i<=104729;i++){//104729是第一万个素数
+        flag=true;
+        for(j=2;j<=sqrt(i);j++){
+            if(i%j==0){
+                flag=false;
+                break;
+            }
+        }
+        if(flag)
+            a[++count]=i;
+        if(count==n)//记录n个素数之后，退出循环
+            break;
+    }
+
+    for(i=m-1;i<=n-1;i++){
+        if(count_x%10==0)
+            printf("%d",a[i]);
+        else
+            printf(" %d",a[i]);
+        count_x++;
+        if(count_x%10==0&&count_x!=0&&count_x!=(m-n))
+            printf("\n");
+    }
+
+    return 0;
+}
