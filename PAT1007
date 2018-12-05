@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <math.h>
+
+bool odd(int n,int m);
+bool judge(int number);
+
+int main() {
+    int n;
+    int i,count=0;
+
+    scanf("%d",&n);
+
+    for(i=2;i<n-1;i++){
+        if(odd(i,i+2))
+            count++;
+    }
+
+    printf("%d",count);
+
+    return 0;
+}
+bool odd(int n,int m){
+    if(judge(n)&&judge(m))
+        return true;
+    else
+        return false;
+}
+
+bool judge(int number){//判断一个数是否是素数，必须满足：
+    int i;
+    for(i=2;i<=sqrt(number);i++){
+        if(number%i==0)
+            return false;
+    }
+    return true;
+}
