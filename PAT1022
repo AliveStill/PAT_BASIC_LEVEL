@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <math.h>
+
+void recursion(long long a,int b);//使用递归方法打印该数
+
+int main() {
+    long long a,b,c;
+    int number;
+
+    scanf("%lld%lld%d",&a,&b,&number);
+    c=a+b;
+    if(c<=number){
+        printf("%lld",c);
+    }
+    else{
+        recursion(c,number);
+    }
+    
+    return 0;
+}
+
+
+
+void recursion(long long a,int b){
+    if(a==0){
+        return;
+    }
+    else{
+        recursion(a/b,b);
+        printf("%lld",a%b);
+    }
+}
