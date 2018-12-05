@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+int main() {
+    int a[1000]={0,},b[1000]={0,};
+    char ch;
+    int i,j=0,k=0;
+    int count=0;
+    int n;
+    int remainder;
+
+
+    while((ch=getchar())!=' '){
+        a[count++]=ch-'0';
+    }//总计读入了count个数据
+
+    scanf("%d",&n);//读入除数
+
+    /*for(i=0;i<count;i++)//读入数据的过程并没有错
+        printf("%2d",a[i]);
+    printf("\n%d",n);*/
+
+    if(a[0]>=n) {
+        b[j]=a[0]/n;
+        remainder=a[0]%n;
+        for (i = 1; i < count; i++) {
+            b[++j]=(remainder*10+a[i])/n;
+            remainder=(remainder*10+a[i])%n;
+        }
+        for(i=0;i<count;i++)
+            printf("%d",b[i]);
+        printf(" %d",remainder);
+    }
+     else{
+        remainder=a[0];
+        for(i=1;i<count;i++){
+            b[j++]=(remainder*10+a[i])/n;
+            remainder=(remainder*10+a[i])%n;
+        }
+        if(count==1)
+            printf("0");
+        else {
+            for (i = 0; i < count - 1; i++)
+                printf("%d", b[i]);
+        }
+        printf(" %d",remainder);
+    }
+
+    return 0;
+}
