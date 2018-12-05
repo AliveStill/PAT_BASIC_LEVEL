@@ -1,0 +1,152 @@
+#include <stdio.h>
+#include <math.h>
+
+int i,j,k;
+int n;
+char ch_1,ch_2;
+int p=0,q=0,m=0;//记录甲胜平负的次数
+int former_count_1=0,former_count_2=0,former_count_3=0;//分别代表锤子，剪刀，布
+int latter_count_1=0,latter_count_2=0,latter_count_3=0;//每场胜的次数
+
+
+int judge(char ch_1,char _ch_2);
+void posture(char po,int x);
+void pre_output(void);
+void read(void);
+void output(int ,int ,int );
+
+
+int main() {
+
+    read();
+    pre_output();
+
+    return 0;
+}
+void read(void){
+    extern int i,j,k;
+    extern int n;
+    extern char ch_1,ch_2;
+    extern int p,q,m;
+
+    scanf("%d",&n);
+    getchar();
+    for(i=0;i<n;i++){
+    	//printf("loop%d\n",i);
+        ch_1=getchar();
+        getchar();
+        ch_2=getchar();
+        getchar();
+        if(judge(ch_1,ch_2)==1){
+            p++;
+        }
+        else if(!judge(ch_1,ch_2)){
+            q++;
+        }
+        else if(judge(ch_1,ch_2)==-1){
+            m++;
+        }
+    }
+}
+void pre_output(void){
+	//printf("enter pre_output");
+    extern int former_count_1,former_count_2,former_count_3;
+    extern int latter_count_1,latter_count_2,latter_count_3;
+    extern int p,q,m;
+    printf("%d %d %d\n",p,q,m);
+    printf("%d %d %d\n",m,q,p);
+    output(former_count_1,former_count_2,former_count_3);
+    putchar(' ');
+    output(latter_count_1,latter_count_2,latter_count_3);
+}
+
+
+int judge(char ch_1,char ch_2){
+	//printf("enter judge");
+    if((ch_1=='C'&&ch_2=='J')||
+            (ch_1=='J'&&ch_2=='B')||
+                    (ch_1=='B'&&ch_2=='C')){
+        posture(ch_1,1);
+        return 1;
+    }
+    else if(ch_1==ch_2){
+        return 0;
+    }
+    else{
+        posture(ch_2,0);
+        return -1;
+    }
+}
+void posture(char po,int x){
+	//printf("enter posture");
+    extern int former_count_1,former_count_2,former_count_3;
+    extern int latter_count_1,latter_count_2,latter_count_3;
+    if(x==1) {
+        if (po == 'C') {
+            former_count_1++;
+            return;
+        } else if (po == 'J') {
+            former_count_2++;
+            return;
+        } else if (po == 'B') {
+            former_count_3++;
+            return;
+        }
+    }
+    else{
+        if (po == 'C') {
+            latter_count_1++;
+            return;
+        } else if (po == 'J') {
+            latter_count_2++;
+            return;
+        } else if (po == 'B') {
+            latter_count_3++;
+            return;
+        }
+    }
+}
+void output(int a,int b,int c){
+//	printf("enter output");
+    int x;
+    if(a!=b&&b!=c&&c!=a) {
+        x = (a >= b) ? a : b;
+        x = (x >= c) ? x : c;//获取三者之间的最大值
+        if(x==a){
+            printf("C");
+        }
+        else if(x==b){
+            printf("J");
+        }
+        else if(x==c){
+            printf("B");
+        }
+    }
+    else if(a==b&&b!=c){
+        if(a>c) {
+            printf("C");
+        }
+        else{
+            printf("B");
+        }
+    }
+    else if(b==c&&b!=a){
+        if(b>a){
+            printf("B");
+        }
+        else{
+            printf("C");
+        }
+    }
+    else if(a==c&&a!=b){
+        if(a>b){
+            printf("B");
+        }
+        else{
+            printf("J");
+        }
+    }
+    else{
+        printf("B");
+    }
+}
