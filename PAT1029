@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+
+char uppercase(char ch){
+	if(ch>='a'&&ch<='z'){
+		return ch-32;
+	}
+	else return ch;
+}
+
+int main(void){
+	char a[1000];
+	char b[1000];
+	char c[1000];
+	int i,j=0;
+	int count=0;
+	
+	scanf("%s%s",a,b);
+	//printf("%s\n%s",a,b);
+	for(i=0;i<strlen(a);i++){
+	label_1:if(a[i]==b[j]){
+			j++;
+			continue;
+		}
+		else{
+			int j;
+			for(j=0;j<strlen(c);j++){//检查数组c中是否有与目标元素重复的元素 
+				if(uppercase(a[i])==c[j]){
+					i++;
+					goto label_1;
+				}
+			}
+			c[count++]=uppercase(a[i]);
+		}
+	}
+	c[count]='\0';
+	
+	printf("%s",c);
+	
+} 
