@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+int main(void) {
+	int n;
+	char ch;
+	int i;
+
+	scanf("%d%*c%c", &n, &ch);
+	for (int j = 0; j < n; j++) {                //打印首行
+		printf("%c", ch);
+	}
+	puts("");
+	for (i = 0; i < ((n + 1) / 2 - 2); i++) {
+		for (int j = 0; j < n; j++) {
+			if (j == 0 || j == n - 1) {
+				printf("%c", ch);                     //打印中间若干行
+			} else {
+				putchar(' ');
+			}
+		}
+		puts("");
+	}
+	for (int j = 0; j < n; j++) {                //打印尾行
+		printf("%c", ch);
+	}
+}
