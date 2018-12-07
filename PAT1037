@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+void output(int );
+
+int main(void){
+	int a1,a2,a3;
+	int sum1;				//应该付的钱 
+	int a4,a5,a6;
+	int sum2;				//实际付的钱 
+	scanf("%d%*c%d%*c%d%*c",&a1,&a2,&a3);
+	scanf("%d%*c%d%*c%d",&a4,&a5,&a6);
+	sum1=a1*17*29+a2*29+a3;
+	sum2=a4*17*29+a5*29+a6; 
+	if(sum1>sum2){
+		putchar('-');
+		output(sum1-sum2);
+	}
+	else{
+		output(sum2-sum1);
+	}
+} 
+
+void output(int n){
+	printf("%d.%d.%d",n/(17*29),(n/29)%17,(n%(17*29))%29);
+}
