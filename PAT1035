@@ -1,0 +1,130 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+int n;
+int *b;
+void sort_Insertion(int *);
+
+void output(int *);
+
+bool compare(int *);
+
+void sort_Merge(int *);
+
+void sort(int *, int, int);
+
+int main(void) {
+	int *a, *c;
+	int i;
+
+	scanf("%d", &n);
+
+	a = (int *) malloc(sizeof(int) * n);
+	c = (int *) malloc(sizeof(int) * n);
+	b = (int *) malloc(sizeof(int) * n);                                        //标准中间数组；
+	for (i = 0; i < n; i++) {
+		scanf("%d", &(a[i]));
+		c[i] = a[i];
+	}
+	for (i = 0; i < n; i++) {
+		scanf("%d", &(b[i]));
+	}
+	sort_Insertion(a);
+	sort_Merge(c);
+}
+
+void sort_Insertion(int *a) {                                            //插入排序
+	int i;
+	bool flag = false;
+	for (i = 1; i < n; i++) {
+		int j = i - 1, k, ex_number;
+		ex_number = a[i];
+		while (a[i] < a[j] && j >= 0) {
+			j--;
+		}
+		for (k = i; k >= j + 2; k--) {
+			a[k] = a[k - 1];
+		}
+		a[j + 1] = ex_number;
+		if (flag) {
+			output(a);
+			return;
+		}
+		if (compare(a)) {                                            //当a,b格局相等时，打印正确，并进入下一次循环
+			printf("%s\n", "Insertion Sort");
+			if (i == n - 1) {
+				output(a);
+			} else {
+				flag = true;
+			}
+		}
+	}
+}
+
+
+void output(int *a) {
+	int i;
+	for (i = 0; i < n; i++) {
+		if (i != 0) {
+			printf(" %d", a[i]);
+		} else {
+			printf("%d", a[i]);
+		}
+	}
+}
+
+bool compare(int *a) {                                                //判断格局是否相等
+	int i;
+	for (i = 0; i < n; i++) {
+		if (a[i] != b[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+void sort_Merge(int *a) {                                            //归并排序
+	int i;
+	int count = 2;
+	bool flag = false;
+	while (count < n * 2) {
+		for (i = 0; i < n - 1; i += count) {
+			if (i + count >= n - 1) {
+				sort(a, i, n - 1);
+			} else {
+				sort(a, i, i + count - 1);
+			}
+		}
+		if (flag) {
+			puts("Merge Sort");
+			output(a);
+			return;
+		}
+		if (compare(a)) {
+			if (count > 2 * n) {
+				puts("Merge Sort");
+				output(a);
+				return;
+			} else {
+				flag = true;
+			}
+		}
+		count *= 2;
+	}
+}
+
+void sort(int *a, int start, int end) {
+	bool flag = true;
+	while (flag) {
+		flag = false;
+		for (int i = start; i < end; i++) {
+			if (a[i] > a[i + 1]) {
+				int ex_number = a[i];
+				a[i] = a[i + 1];
+				a[i + 1] = ex_number;
+				flag = true;
+			}
+		}
+	}
+}
