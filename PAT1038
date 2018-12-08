@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+int extend(int *,int ,int);
+int compare(const void *,const void *);
+int search(int *,int,int);
+
+int main(void){
+	int m,n;
+	int i;
+	int *a,*b;
+
+	scanf("%d",&n);
+	a=(int *)malloc(sizeof(int )*n);
+	for(i=0;i<n;i++){
+		scanf("%d",&(a[i]));
+	}
+	scanf("%d",&m);
+	b=(int *)malloc(sizeof(int )*m);
+	for(i=0;i<m;i++){
+		scanf("%d",&(b[i]));
+	}
+	qsort(a,n,sizeof(int),compare);//快速排序
+	for(i=0;i<m;i++){
+		int count;
+		if(i!=0){
+			printf(" %d",search(a,b[i],n));//
+		}
+		else{
+			printf("%d",search(a,b[i],n));
+		}
+	}
+}
+
+
+int search(int *a,int key,int n){
+	int upper=n-1,lower=0,half;
+	while(upper>=lower){
+		half=(upper+lower)/2;
+		if(a[upper]==key&&a[lower]==key){//找到之后对half进行扩展
+			return (extend(a,lower,n));
+		}
+		else{
+			if(a[half]==key){
+				upper=half;
+				lower=half;
+			}
+			else{
+				if(a[half]>key){
+					upper=(half+lower)/2-1;
+				}
+				else{
+					lower=(half+upper)/2+1;
+				}
+			}
+		}
+	}
+	return 0; //没有找到，返回0
+}
+
+
+
+int extend(int *a,int lower,int n){
+	int  i,j;
+	for(i=lower+1;i<n;i++){
+		if(a[i]!=a[lower]){
+			break;
+		}
+	}
+	for(j=lower-1;j>=0;j--){
+		if(a[j]!=a[lower]){
+			break;
+		}
+	}
+	return i-j-1;
+}
+
+int compare(const void *a,const void *b){
+	return (*(int *)a-*(int *)b);
+}
