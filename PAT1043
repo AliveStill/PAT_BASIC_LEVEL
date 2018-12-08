@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+int main(void){
+	int str[6]={0,};
+	char ch;
+	int i;
+	
+	while((ch=getchar())!=EOF){
+		switch(ch){//读取数据 
+			case 'P':str[0]++;break;
+			case 'A':str[1]++;break;
+			case 'T':str[2]++;break;
+			case 'e':str[3]++;break;
+			case 's':str[4]++;break;
+			case 't':str[5]++;break;
+			default: ;
+		}
+	}
+	while(str[5]||str[0]||str[1]||str[2]||str[3]||str[4]){
+		if(str[0]){
+			putchar('P');str[0]--;
+		}
+		if(str[1]){
+			putchar('A');str[1]--;
+		}
+		if(str[2]){
+			putchar('T');str[2]--;
+		}
+		if(str[3]){
+			putchar('e');str[3]--;
+		}
+		if(str[4]){
+			putchar('s');str[4]--;
+		}
+		if(str[5]){
+			putchar('t');str[5]--;	
+		}
+	} 
+}
