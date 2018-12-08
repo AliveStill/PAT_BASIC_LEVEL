@@ -46,10 +46,10 @@ int search(int *a,int key,int n){
 			}
 			else{
 				if(a[half]>key){
-					upper=(half+lower)/2-1;
+					upper=half-1;
 				}
 				else{
-					lower=(half+upper)/2+1;
+					lower=half+1;
 				}
 			}
 		}
@@ -61,12 +61,12 @@ int search(int *a,int key,int n){
 
 int extend(int *a,int lower,int n){
 	int  i,j;
-	for(i=lower+1;i<n;i++){
+	for(i=lower;i<n;i++){
 		if(a[i]!=a[lower]){
 			break;
 		}
 	}
-	for(j=lower-1;j>=0;j--){
+	for(j=lower;j>=0;j--){
 		if(a[j]!=a[lower]){
 			break;
 		}
