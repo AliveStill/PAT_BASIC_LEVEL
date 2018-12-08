@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct count_alp{
+	char alp;
+	int count;
+}s[26];
+
+int main(void){
+	int i=0;
+	char ch='a';
+	int n=0;
+	int max_number=0;
+	int max_char;
+	
+	for(i=0;i<26;i++){
+		s[i].alp=ch++;
+		s[i].count=0;
+	}
+	
+	while((ch=getchar())!=EOF){
+		if(ch>='a'&&ch<='z'){
+			s[ch-'a'].count++;
+			n++;
+		}
+		else if(ch>='A'&&ch<='Z'){
+			s[ch-'A'].count++;
+			n++;
+		}
+	}
+	for(i=0;i<26;i++){
+		if(s[i].count>max_number){
+			max_number=s[i].count;
+			max_char=s[i].alp;
+		}
+	}
+	printf("%c %d",max_char,max_number);
+}
