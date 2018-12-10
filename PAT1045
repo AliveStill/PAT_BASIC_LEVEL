@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+int compare(const void *a,const void *b){
+	return *(int *)a-*(int *)b;
+}
+int main(void){
+	int *a,*b;
+	int n;
+	int i;
+	int count=0;
+	int flag=true;
+	
+	scanf("%d",&n);
+	a=(int *)malloc(sizeof(int)*n);
+	b=(int *)malloc(sizeof(int)*n);
+	for(i=0;i<n;i++){
+		scanf("%d",&a[i]);
+		b[i]=a[i];
+	}
+	qsort(b,i,sizeof(int),compare);
+	for(i=0;i<n;i++){
+		if(a[i]==b[i]){
+			count++;
+		}
+		else{
+			b[i]=0;
+		}
+	}
+	if(count){
+		printf("%d\n",count);
+	}
+	else{
+		printf("%d",count);
+	}
+	for(int i=0;i<n;i++){
+		if(b[i]){
+			if(!flag){
+				printf(" %d",b[i]);
+			}
+			else{
+				printf("%d",b[i]);
+				flag=false;
+			}
+		}
+	}
+}
