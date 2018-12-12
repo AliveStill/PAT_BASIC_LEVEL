@@ -1,3 +1,4 @@
+/*双向遍历求一组未排序数中能够成为主元的数的个数，并将其打印出来*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -5,6 +6,7 @@
 int compare(const void *a,const void *b){
 	return *(int *)a-*(int *)b;
 }
+
 int main(void){
 	int *a,*b;
 	int n;
@@ -16,33 +18,62 @@ int main(void){
 	a=(int *)malloc(sizeof(int)*n);
 	b=(int *)malloc(sizeof(int)*n);
 	for(i=0;i<n;i++){
-		scanf("%d",&a[i]);
-		b[i]=a[i];
+		scanf("%d",&(a[i]));
 	}
-	qsort(b,i,sizeof(int),compare);
-	for(i=0;i<n;i++){
-		if(a[i]==b[i]){
-			count++;
+	int back_index=0;int forward_index=n-1;//动态记录符合条件的值，包括前向计数和后向计数 
+	int current_back_index=0;int current_forward_index=n-1;
+	
+	
+	while(current_forward_index>current_back_index){
+		for(i=current_back_index;i<=forward_index;i++){
+			if(a[i]<a[current_back_index]){
+				flag=false; 
+				break;
+			}
+		}
+		if(flag){
+			b[count++]=a[current_back_index];
+			back_index=current_back_index;
 		}
 		else{
-			b[i]=0;
+			flag=true;
 		}
+		current_back_index++; 
+		if(forward_index<back_index&&n%2==1){//如果格局不满足条件，及时退出循环 
+			break;
+		} 
+		for(i=current_forward_index;i>=back_index;i--){
+			if(a[i]>a[current_forward_index]){
+				flag=false;
+				break;
+			}
+		}
+		if(flag){
+			forward_index=current_forward_index;
+			b[count++]=a[current_forward_index];
+		}
+		else{
+			flag=true; 
+		} 
+		current_forward_index--;
 	}
+	
 	if(count){
 		printf("%d\n",count);
+		qsort(b,count,sizeof(int),compare);
 	}
 	else{
 		printf("%d",count);
 	}
-	for(int i=0;i<n;i++){
-		if(b[i]){
-			if(!flag){
-				printf(" %d",b[i]);
-			}
-			else{
-				printf("%d",b[i]);
-				flag=false;
-			}
+	for(i=0;i<count;i++){
+		if(i){
+			printf(" %d",b[i]);	
+		}
+		else{
+			printf("%d",b[i]);
 		}
 	}
+	
 }
+	
+	
