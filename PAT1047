@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+struct team{
+	int label;
+	int grade;
+}a[10000];
+
+void sort(){
+	int i;
+	int flag=1;
+	while(flag){
+		flag=0;
+		for(i=0;i<9999;i++){
+			if(a[i].grade<a[i+1].grade){
+				struct team k=a[i];
+				a[i]=a[i+1];
+				a[i+1]=k;
+				flag=1;
+			}
+		}
+	}
+}
+
+
+int main(void){
+	int n;
+	int i,teams,number,grades;
+	
+	for(i=0;i<10000;i++){
+		a[i].grade=0;
+		a[i].label=i+1;
+	}
+	
+	scanf("%d",&n);
+	getchar();
+	for(i=0;i<n;i++){
+		scanf("%d%*c%d%*c%d%*c",&teams,&number,&grades);
+		a[teams-1].grade+=grades;
+	}
+	sort();
+	printf("%d %d",a[0].label,a[0].grade);
+}
