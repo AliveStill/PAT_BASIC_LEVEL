@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main(void){
+	int n;
+	int i;
+	int x1,x2,y1,y2;
+	int count1=0,count2=0;
+	int sum;
+	
+	scanf("%d",&n);
+	for(i=0;i<n;i++){
+		scanf("%d%d%d%d",&x1,&x2,&y1,&y2);
+		sum=x1+y1;
+		if(x2==sum&&y2==sum){
+			;
+		}
+		else if(x2!=sum&&y2!=sum){
+			;
+		}
+		else if(x2!=sum&&y2==sum){
+			count1++;
+		}
+		else{
+			count2++;
+		}
+	}
+	printf("%d %d",count1,count2);
+}
