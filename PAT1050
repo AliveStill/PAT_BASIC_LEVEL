@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdbool.h>
+
+int row=0,col=0;
+int count=0;
+int x;
+int m,n;//定义需要的行数和列数 
+int **a;
+int *b;
+int m_fixed,n_fixed;
+
+void calculating_rows_column(int );
+void fill_in(void);
+void putout();
+int compare(const void *,const void *);
+void sort(int *, int , int );
+
+
+
+int main(void){
+	scanf("%d",&x);
+	a=(int **)malloc(sizeof(int)*x);//为待填充数组分配内存空间
+	b=(int *)malloc(sizeof(int)*x);
+	if(a==NULL||b==NULL){
+		puts("Unable to distribute memory.");
+		exit(0);
+	}
+	calculating_rows_column(x);
+	m_fixed=m;n_fixed=n;//将m，n的值固定 
+	for(int i=0;i<m;i++){
+		a[i]=(int *)malloc(sizeof(int)*n);
+		if(a[i]==NULL){
+			puts("Unable to distribute memory.");
+			exit(0);
+		}
+	}
+	for(int i=0;i<x;i++){
+		scanf("%d",&(b[i]));//获取需要填充的数据 
+	}
+	qsort(b,x,sizeof(int),compare);
+	if(n<=1){
+		for(int i=0;i<x;i++){
+			printf("%d",b[i]);
+			if(i!=x-1){
+				puts("");
+			}
+		}
+		exit(0);
+	}
+	fill_in();//填充操作 
+	putout();
+}
+
+
+void fill_in(void){
+	if(count>=x){
+		puts("ready to return .");
+		return ;
+	}
+	int i,j,k,l;
+	if(b==NULL){
+		puts("the array b is empty.");
+	}
+	for(i=col;i<n-1;i++){
+		a[row][i]=b[count++];
+	}
+	for(j=row;j<m-1;j++){
+		a[j][i]=b[count++];
+	}
+	for(k=n-1;k>col;k--){
+		a[j][k]=b[count++];
+	}
+	for(l=j;l>row;l--){
+		a[l][k]=b[count++];
+		if(count>=x){
+			return ;
+		}
+	}
+	m--;n--;row++;col++;
+	fill_in();
+}
+
+
+void calculating_rows_column(int x){
+	for(int i=sqrt(x);i>=1;i--){
+		if(x%i==0){
+			n=i;
+			m=x/i;
+			return ;
+		}
+	}
+	return ;
+}
+
+void putout(){
+	for(int i=0;i<m_fixed;i++){
+		for(int j=0;j<n_fixed;j++){
+			if(j!=0){
+				printf(" %d",a[i][j]);
+			}
+			else{
+				printf("%d",a[i][j]);
+			}
+		}
+		if(i!=m_fixed-1){
+			puts("");
+		}
+	}
+}
+
+int compare(const void *a,const void *b){
+	return *(int *)b-*(int *)a;
+}
+
