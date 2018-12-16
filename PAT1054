@@ -1,0 +1,130 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
+
+char **a;
+char **b;//存储无效字符集 
+int count=0;
+double sum=0;//存储有效数字之和 
+	
+	
+bool judge(char *str);
+
+
+int main(void){
+	int n;
+	scanf("%d%*c",&n);
+	a=(char **)malloc(sizeof(char)*n*100);
+	b=(char **)malloc(sizeof(char)*n*100);
+	for(int i=0;i<n;i++){
+		a[i]=(char *)malloc(sizeof(char)*100);
+	}
+	for(int i=0;i<n;i++){												//读取数据 
+		scanf("%s",a[i]);
+	}
+	for(int i=0;i<n;i++){
+		if(!judge(a[i])){
+			b[count++]=a[i];
+		}
+	} 
+	double remainder=0;
+	if(n-count){
+		if((int)((sum/(n-count))*1000)%10>=5){
+			remainder=0.01;												//考虑进位 
+		}
+	}
+	for(int i=0;i<count;i++){
+		printf("ERROR: %s is not a legal number\n",b[i]);
+	}
+	if(n-count>1){
+		printf("The average of %d numbers is %.2lf",n-count,((sum)/(n-count))+remainder);
+	}
+	else if(n-count==1){
+		printf("The average of 1 number is %.2lf",((sum)/(n-count))+remainder);
+	}
+	else{
+		printf("The average of %d numbers is Undefined",n-count);
+	}
+}
+
+bool judge(char *str){
+	if(strlen(str)>8){
+		return false;
+	}
+	for(int i=0;i<strlen(str);i++){
+		if(isdigit(str[i])||str[i]=='-'||str[i]=='.'){
+			;
+		}
+		else{
+			return false;
+		}									//过滤字符，剩下的字符全部由数字，点，负号组成 
+	} 
+	if(strchr(str,'-')){					//假如存在负号，进入循环 
+		double remainder=0;
+		if(strrchr(str,'-')!=str){			//查找最后一个负号的位置，若不在最前，返回false 
+			return false;
+		}
+		else{
+			if(strchr(str,'.')){			//假如存在小数点，情况将会变得复杂,分别获取小数部分和整数部分 
+			if(strrchr(str,'.')!=strchr(str,'.')){
+				return false;
+			}
+			if(((str+strlen(str))-strchr(str,'.'))/sizeof(char)-1>2){
+				return false;
+			}
+			int i,j;	int index1=10;double index2=0.1;
+			for(i=1;i<(strchr(str,'.')-str)/sizeof(char);i++){
+				remainder=remainder*index1+(double)(str[i]-'0');
+			} 
+			for(j=i+1;j<strlen(str);j++){
+				remainder+=(str[j]-'0')*index2;
+				index2*=0.1;
+			}  
+		}
+		else{ 
+			int index=10;
+			for(int i=1;i<strlen(str);i++){
+				remainder=remainder*index+str[i]-'0';
+			}
+		
+		} 
+		}
+		if(remainder-1000>1e-5){
+			return false;
+		}
+		sum-=remainder;
+	}
+	else{
+		double number=0;
+		if(strchr(str,'.')){				//假如存在小数点，情况将会变得复杂,分别获取小数部分和整数部分 
+			if(strrchr(str,'.')!=strchr(str,'.')){
+				return false;
+			}
+			if(((str+strlen(str))-strchr(str,'.'))/sizeof(char)-1>2){
+				return false;
+			}
+			int i,j;	int index1=10;double index2=0.1;
+			for(i=0;i<(strchr(str,'.')-str)/sizeof(char);i++){
+				number=number*index1+str[i]-'0';
+			}
+			for(j=i+1;j<strlen(str);j++){
+				number+=(str[j]-'0')*index2;
+				index2*=0.1;
+			} 
+		}
+		else{										//否则存不在，将字符串化为浮点数 
+			int index=10;
+			for(int i=0;i<strlen(str);i++){
+				number=number*10+str[i]-'0';
+			}
+		} 
+		if(number-1000>1e-5){
+			return false;
+		}
+		sum+=number;
+	} 
+	return true;
+	
+}
