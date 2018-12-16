@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+	
+int main(int argc, char *argv[]) {
+	int i,j;
+	int vacant=0,may_vacant=0; 						//可能为空房间的数目和空房间的数目 
+	double thr_ele;									      //用电量阈值和观察期阈值
+	int thr_days; 
+	int n;											          //住房数 
+	
+	scanf("%d%lf%d",&n,&thr_ele,&thr_days);
+	for(i=0;i<n;i++){
+		int ind_days;	double ele_inv; bool flag=true;
+		int counter_may_vacant=0;
+		scanf("%d",&ind_days);
+		for(j=0;j<ind_days;j++){
+			scanf("%lf",&ele_inv);
+			if(thr_ele-ele_inv>1e-5){
+				counter_may_vacant++;
+			}	
+		}
+		if(counter_may_vacant*2>ind_days){
+			may_vacant++;
+			if(ind_days>thr_days){
+				vacant++;
+			} 
+		}
+	}
+	printf("%.1lf%% ",(double)(may_vacant-vacant)/n*100);
+	printf("%.1lf%%",(double)(vacant)/n*100);
+	return 0;
+}
