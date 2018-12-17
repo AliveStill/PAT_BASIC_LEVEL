@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <ctype.h>
+
+int count=0;
+int count_all=0;
+
+void toBinary(int );
+
+int main(void){
+	int sum=0;
+	char ch;
+	
+	while((ch=getchar())!=EOF){
+		if(isupper(ch)){
+			sum+=(int)ch-64;
+		}
+		else if(islower(ch)){
+			sum+=(int)ch-96;
+		}
+	}
+	toBinary(sum);
+	printf("%d %d",count,count_all-count);
+	
+} 
+
+void toBinary(int n){
+	if(n==0){
+		return ;
+	}
+	count_all++;
+	if(n%2==0){
+		count++;
+	}
+	toBinary(n/2);
+}
