@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <stdbool.h>
+
+int compare(const void *a,const void *b){
+	return *(int *)a-*(int *)b;
+}
+
+void bubble_sort(int *a,int n){
+	bool flag=true;
+	while(flag){
+		flag=false;
+		for(int i=0;i<n-1;i++){
+			if(a[i]>a[i+1]){
+				int j=a[i];
+				a[i]=a[i+1];
+				a[i+1]=j;
+				flag=true;
+			}
+		}
+	}
+}
+int main(void){
+	int n;
+	int *a;
+	int count=1;
+	
+	scanf("%d",&n);
+	if(n==1){
+		int x;
+		scanf("%d",&x);
+		if(x==0||x==1){
+			putchar('0');
+		}
+		else{
+			putchar('1');
+		}
+		exit(0);
+	}
+	a=(int *)malloc(sizeof(int )*n);
+	assert(a!=NULL);
+	for(int i=0;i<n;i++){
+		scanf("%d",&(a[i]));
+	}
+	qsort(a,n,sizeof(int),compare);
+	bubble_sort(a,n);
+	for(int i=n-1;i>=0;i--){
+		if(count>=a[i]){
+			break;
+		}
+		count++;
+	}
+	count--;
+	printf("%d",count);
+}
