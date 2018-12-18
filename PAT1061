@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void){
+	int m,n;//分别表示 学生人数和判断题总数 
+	int *ind_grades,*que_grade;
+	int *stand_judge,*student_judge;
+	
+	scanf("%d%d",&m,&n);
+	que_grade=(int *)malloc(sizeof(int)*n);
+	ind_grades=(int *)malloc(sizeof(int)*m);
+	stand_judge=(int *)malloc(sizeof(int)*n);
+	student_judge=(int *)malloc(sizeof(int)*n);
+	for(int i=0;i<n;i++){
+		scanf("%d",&(que_grade[i]));
+	}
+	for(int i=0;i<n;i++){
+		scanf("%d",&(stand_judge[i]));
+	}
+	for(int i=0;i<m;i++){
+		ind_grades[i]=0;
+	}
+	for(int i=0;i<m;i++){
+		for(int j=0;j<n;j++){
+			scanf("%d",&(student_judge[j]));
+			if(student_judge[j]==stand_judge[j]){
+				ind_grades[i]+=que_grade[j];
+			}
+		}
+	}
+	for(int i=0;i<m;i++){
+		printf("%d\n",ind_grades[i]);
+	}
+	free(que_grade);
+	free(ind_grades);
+	free(student_judge);
+	free(stand_judge);
+}
