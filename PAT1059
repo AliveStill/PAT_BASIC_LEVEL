@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <math.h>
+#include <assert.h>
+
+struct chimpionship{
+	int order;
+	int numbers;
+}*a;
+
+int compare(const void *a,const void *b){					//结构体一级排序 
+	return (*(struct chimpionship *)a).numbers-
+			(*(struct chimpionship *)b).numbers;
+}
+
+struct chimpionship * search_element(int key,int m){
+	struct chimpionship *search_result;
+	int lower=0,upper=m-1;
+	while(upper>=lower){
+		if(a[(upper+lower)/2].numbers==key){
+			search_result=&a[(upper+lower)/2];
+			return search_result;
+		}
+		else if(a[(upper+lower)/2].numbers>key){
+			upper=(upper+lower)/2-1;
+		}
+		else{
+			lower=(upper+lower)/2+1;
+		}
+	}
+	return NULL;
+} 
+
+bool isPrime(int n){
+	for(int i=2;i<=sqrt(n);i++){
+		if(n%i==0){
+			return false;
+		}
+	}
+	return true;
+}
+
+int main(void){
+	int *search;
+	int n,m;
+	
+	scanf("%d",&m);
+	a=(struct chimpionship *)malloc(sizeof(struct chimpionship)*m);
+	assert(a!=NULL);								//设置断言，假如表达式为假，退出程序 
+	for(int i=0;i<m;i++){
+		a[i].order=i+1;
+		scanf("%d",&(a[i].numbers));
+	}
+	qsort(a,m,sizeof(struct chimpionship),compare);
+	scanf("%d",&n);
+	search=(int *)malloc(sizeof(int)*n);
+	assert(search!=NULL);
+	for(int i=0;i<n;i++){
+		scanf("%d",&(search[i]));
+	}
+	for(int i=0;i<n;i++){
+		struct chimpionship *search_result; 
+		search_result=search_element(search[i],m);
+		if(search_result){						//假如查找结果不为NULL 
+			if(search_result->order==EOF){
+				printf("%04d: Checked\n",search[i]);
+				continue;
+			}									//将已经领奖的位置设置为EOF，避免重复领奖 
+			if(search_result->order==1){
+				printf("%04d: Mystery Award\n",search[i]);
+			}
+			else if(isPrime((search_result->order))){
+				printf("%04d: Minion\n",search[i]);
+			}
+			else{
+				printf("%04d: Chocolate\n",search[i]);
+			}
+			search_result->order=EOF;			//打印各种奖项 
+		}
+		else{
+			printf("%04d: Are you kidding?\n",search[i]);
+		}
+	}
+	free(a);
+	free(search);
+}
