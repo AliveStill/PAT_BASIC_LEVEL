@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+
+int main(void){
+	int n;
+	int i,count=0;
+	char password[50];
+	char **experiment;
+	
+	scanf("%s%d%*c",password,&n);
+	experiment=(char **)malloc(sizeof(char )*50*n);
+	assert(experiment!=NULL);
+	for(i=0;;i++)
+		{
+		experiment[i]=(char *)malloc(sizeof(char )*50);
+		assert(experiment[i]!=NULL);
+		gets(experiment[i]);
+		if(experiment[i][0]=='#'&&strlen(experiment[i])==1)
+		{//这里一定要避免密码开头是‘#’的情况，否则第六个测试点过不去 
+			break;
+		}
+	}
+	for(int j=0;j<i;j++)
+		{
+		if(strcmp(password,experiment[j]))
+		{
+			printf("Wrong password: %s\n",experiment[j]);
+			count++;
+			if(count>=n){
+				printf("Account locked");
+				exit(0);
+			}
+		}
+		else
+		{
+			printf("Welcome in");
+			exit(0);
+		}
+	}
+	free(experiment);
+}
