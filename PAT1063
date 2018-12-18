@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include <math.h>
+
+int main(void){
+	double max_circle=0;
+	int n;
+	
+	scanf("%d",&n);
+	for(int i=0;i<n;i++){
+		int x,y;
+		double circle;
+		scanf("%d%d",&x,&y);
+		circle=(long double)sqrt(x*x+y*y);
+		max_circle=(max_circle>circle)?max_circle:circle;
+	}
+	printf("%.2lf",max_circle);
+}
