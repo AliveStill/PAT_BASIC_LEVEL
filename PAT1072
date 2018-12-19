@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <stdbool.h>
+
+int *ill_numbers;
+int m;
+
+
+struct person{
+	char name[5];
+	int *numbers;
+	int odds;
+}*a;
+
+int compare(const void *a,const void *b){
+	return *(int *)a-*(int *)b;
+}
+
+
+int main(void){
+	int n;
+	int odd_numbers;
+	int illegal_count=0;
+	int illegal_students=0;
+	bool flag=true;
+	
+	scanf("%d%d",&n,&m);
+	ill_numbers=(int *)malloc(sizeof(int)*m);
+	assert(ill_numbers);
+	a=(struct person *)malloc(sizeof(struct person)*n);
+	for(int i=0;i<m;i++){
+		scanf("%d",&(ill_numbers[i]));
+	}
+	qsort(ill_numbers,m,sizeof(int),compare);
+	for(int i=0;i<n;i++){
+		char ch;
+		while((ch=getchar())!='\n'){
+			continue;
+		}
+		scanf("%s",a[i].name);
+		scanf("%d",&odd_numbers);
+		a[i].odds=odd_numbers;
+		a[i].numbers=(int *)malloc(sizeof(int )*odd_numbers);
+		assert(a[i].numbers);
+		for(int j=0;j<odd_numbers;j++){
+			scanf("%d",&(a[i].numbers[j]));
+		}
+	}
+	for(int i=0;i<n;i++){
+		flag=true;
+		for(int j=0;j<a[i].odds;j++){
+			if(bsearch(&(a[i].numbers[j]),ill_numbers,m,sizeof(int),compare)){
+				illegal_count++;
+				if(flag){
+					illegal_students++;
+					printf("%s:",a[i].name);
+					flag=false;
+				}
+				printf(" %04d",a[i].numbers[j]);
+			}
+		}
+		if(!flag){
+			puts("");	
+		}
+	}
+	printf("%d %d",illegal_students,illegal_count);
+	free(ill_numbers);
+	free(a);
+}
