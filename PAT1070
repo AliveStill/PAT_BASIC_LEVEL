@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <stdbool.h>
+#include <math.h>
+
+int *a;
+int count;
+
+int compare(const void *a,const void *b){
+	return *(int *)a-*(int *)b;
+}
+
+int main(void){
+	int n;
+	//double sum=0;
+	int divisor=2;
+	int start_node;
+	bool flag=true;
+	
+	scanf("%d",&n);
+	a=(int *)malloc(sizeof(int)*n);
+	assert(a!=NULL);
+	for(int i=0;i<n;i++){
+		scanf("%d",&(a[i]));
+	}
+	qsort(a,n,sizeof(int),compare);
+	double sum=a[0];
+	for(int i=1;i<n;i++){
+		sum=(sum+a[i])/2;
+	}
+	printf("%.0lf",floor(sum));
+	free(a);
+}
