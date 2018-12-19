@@ -1,0 +1,120 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define SIZE 22
+
+
+int main(void){
+	int a[SIZE+1]={0,};
+	int b[SIZE+1]={0,};
+	int c[SIZE+1]={0,};
+	int keep[SIZE+1]={0,};
+	int PAT[SIZE+1]={0,};
+	char ch;
+	int count=0;
+	int count1=0,count2=0,max;
+	int remainder=0;
+	int keep_count=SIZE;
+	bool flag=true;
+	
+	flag=true;
+	while((ch=getchar())!='\n')
+	{
+		a[count++]=ch-'0';
+	}
+	while((ch=getchar())!='\n')
+	{
+		b[count1++]=ch-'0';
+	}
+	while((ch=getchar())!='\n')
+	{
+		c[count2++]=ch-'0';
+	}//分别获取两个PAT数以及进制转化数，并独立保存其位数
+//	printf("%d %d %d",count,count1,count2);
+	if(count1>count2){
+		for(int i=count1-1;i>count1-count2-1;i--){
+			c[i]=c[i-(count1-count2)];
+		}
+		for(int i=0;i<count1-count2;i++){
+			c[i]=0;
+		}
+	} 
+	else if(count2>count1){
+		for(int i=count2-1;i>count2-count1-1;i--){
+			b[i]=b[i-(count2-count1)];
+		}
+		for(int i=0;i<count2-count1;i++){
+			b[i]=0;
+		}
+	}
+	for(int i=SIZE;i>SIZE-(count);i--){
+		a[i]=a[count-(SIZE+1-i)];
+	}
+	max=(count1>count2)?count1:count2;
+	for(int i=max-1;i>=0;i--){
+		keep[keep_count--]=(b[i]+c[i]+remainder)%10;
+		if(b[i]+c[i]+remainder>=10){
+			remainder=1;
+		}
+		else{
+			remainder=0;
+		}
+	}
+	if(remainder){//考虑长度过大而进位的问题 
+		keep[keep_count]=remainder;
+	}
+	
+	/*for(int i=0;i<SIZE+1;i++){
+		printf("%5d",a[i]);
+	}
+	puts("");
+	for(int i=0;i<SIZE+1;i++){
+		printf("%5d",b[i]);
+	}
+	puts("");
+	for(int i=0;i<SIZE+1;i++){
+		printf("%5d",c[i]);
+	}
+	puts("");
+	for(int i=0;i<SIZE+1;i++){
+		printf("%5d",keep[i]);
+	}
+	puts("");*/
+	//下面进行进制转化：
+//	printf("count=%d\t,keep_count=%d\n",count,keep_count);
+	remainder=0;
+	for(int i=SIZE;i>=keep_count;i--){
+		int k=remainder;
+		if(a[i]==0)
+		{
+		a[i]=10;
+		}
+		remainder=(keep[i]+remainder)/a[i];
+		PAT[i]=(keep[i]+k)%a[i];
+	}
+	for(int i=SIZE;i>=0;i--){
+		if(PAT[i]!=0){
+			flag=false;
+			break;
+		}
+	}
+	if(flag){
+		printf("0");
+		exit(0);
+	}
+	/*for(int i=0;i<21;i++){
+		printf("%5d",PAT[i]);
+	}*/
+//	puts("");
+	flag=true;
+	for(int i=0;i<SIZE+1;i++){
+		if(PAT[i]==0&&flag){
+			;
+		}
+		else{
+			flag=false;
+			printf("%d",PAT[i]);
+		}
+	}
+	
+} 
