@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <assert.h>
+#include <string.h>
+
+int count=0;
+char **a;
+
+bool search(char *str)//检查这个名字是否已经储存，如果有，返回false； 
+{
+	for(int i=0;i<count;i++)
+	{
+		if(!strcmp(str,a[i]))
+		{
+			return true;
+		}
+	} 
+	return false;
+}
+
+
+int main(void){
+	int sum,ini,loop;
+	
+	scanf("%d%d%d%*c",&sum,&loop,&ini);
+	if(sum<ini)
+	{
+		puts("Keep going...");
+		return 0;
+	}
+	char str[21];
+	for(int i=0;i<ini-1;i++)
+	{
+		gets(str);
+	}
+	a=(char **)malloc(sizeof(char )*(sum-ini+1)*21);
+	assert(a!=NULL);
+	int count_x=0;
+	int j=-1;
+	for(int i=0;i<sum-ini+1;i++)
+	{
+		j++;
+		if(j%loop!=0)
+		{
+			gets(str);
+			count_x++;
+			continue;
+		}
+		a[count]=(char *)malloc(sizeof(char )*21);
+		assert(a[count]!=NULL);
+		gets(a[count]);
+		if(search(a[count]))
+		{
+			j--;
+			free(a[count]);
+		}
+		else
+		{
+			count++;
+		}
+	}
+	for(int i=0;i<count;i++)
+	{
+		printf("%s\n",a[i]);
+	}
+} 
