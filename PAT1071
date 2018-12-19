@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+	int total,upper,lower,count;
+	int judge;
+	int stake;
+	
+	scanf("%d%d",&total,&count);
+	for(int i=0;i<count;i++)
+	{
+		scanf("%d%d%d%d",&upper,&judge,&stake,&lower);
+		if(stake>total){
+			printf("Not enough tokens.  Total = %d.\n",total);
+			continue;
+		}
+		if(upper<lower&&judge==1){
+			total+=stake;
+			printf("Win %d!  Total = %d.\n",stake,total);
+		}
+		else if(upper>lower&&judge==0){
+			total+=stake;
+			printf("Win %d!  Total = %d.\n",stake,total);
+		}
+		else{
+			total-=stake;
+			printf("Lose %d.  Total = %d.\n",stake,total);
+		}
+		if(total<=0){
+			puts("Game Over.");
+			exit(0);
+		}
+	}
+}
