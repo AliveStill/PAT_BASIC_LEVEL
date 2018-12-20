@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void){
+	int *series;
+	int n,count=0;
+	char ch;
+	char option;
+	
+	scanf("%d%*c",&n);
+	series=(int *)malloc(sizeof(int )*n);
+	for(int i=0;i<n;i++){
+		for(int j=0;j<4;j++){
+			scanf("%c%*c%c%*c",&option,&ch);
+			if(ch=='T'){
+				series[count++]=option-'A'+1;
+			}
+		}
+	}
+	for(int i=0;i<n;i++){
+		printf("%d",series[i]);
+	}
+}
