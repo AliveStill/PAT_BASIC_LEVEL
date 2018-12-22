@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <stdio.h>
+
+int main(void){
+	int n,limit_grade;
+	int read_grade;
+	int ind_max_grade;//单组最高成绩
+	int ind_min_grade;//单组最低成绩 
+	int ind_sum;
+	int teacher_grade; 
+	float *final_grade;
+	float ind_average;
+	
+	scanf("%d%d",&n,&limit_grade);
+	final_grade=(float *)malloc(sizeof(int)*n);
+	assert(final_grade);
+	for(int i=0;i<n;i++){
+		scanf("%d",&teacher_grade);
+		ind_max_grade=0;
+		ind_min_grade=100;
+		ind_sum=0;
+		int count=0;
+		for(int j=0;j<n-1;j++){
+			scanf("%d",&read_grade);
+			if(read_grade<0||read_grade>limit_grade){
+				continue;
+			}
+			count++;
+			ind_max_grade=(ind_max_grade>read_grade)?ind_max_grade:read_grade;
+			ind_min_grade=(ind_min_grade<read_grade)?ind_min_grade:read_grade;
+			ind_sum+=read_grade;
+		} 	
+		ind_sum-=(ind_max_grade+ind_min_grade);
+		ind_average=(float)ind_sum/(count-2);
+		final_grade[i]=(float)(ind_average+teacher_grade)/2;
+	}
+	for(int i=0;i<n;i++){
+		printf("%.0lf",round(final_grade[i]));
+			puts("");
+	}
+	free(final_grade);
+}
