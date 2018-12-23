@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main() {
+    char str[81];
+    bool flag_number,flag_alp;
+    int n,count=0;
+    int *store;
+    //以数字存储状态，1表示完美，2表示太短，3表示太乱，4表示没数字，5表示没有字母
+
+
+    scanf("%d%*c",&n);
+    store=(int *)malloc(sizeof(int )*n);
+    for(int i=0;i<n;i++){
+        label_for_head:   if(i>=n){break;}
+        gets(str);
+        flag_number=false;
+        flag_alp=false;
+        if(strlen(str)<6){
+            store[count++]=2;
+            continue;
+        }//密码太短了
+        for(int j=0;j<strlen(str);j++){
+            if(str[j]=='.'||isdigit(str[j])||isalpha(str[j])){
+                ;
+            }
+            else{
+               store[count++]=3;
+               i++;
+               goto label_for_head;
+            }
+        }//包含非法字符
+        for(int k=0;k<strlen(str);k++){
+            if(isdigit(str[k])){
+                flag_number=true;
+            }
+            if(isalpha(str[k])){
+                flag_alp=true;
+            }
+        }
+        if(!flag_number){
+            store[count++]=4;
+            continue;
+        }//没有数字
+        if(!flag_alp){
+            store[count++]=5;
+            continue;
+        }//没有字母
+        store[count++]=1;//符合要求
+    }
+    for(int i=0;i<count;i++){
+        switch(store[i]){
+            case 1:puts("Your password is wan mei.");break;
+            case 2:puts("Your password is tai duan le.");break;
+            case 3:puts("Your password is tai luan le.");break;
+            case 4:puts("Your password needs shu zi.");break;
+            case 5:puts("Your password needs zi mu.");break;
+        }
+    }
+    free(store);
+
+    return 0;
+}
