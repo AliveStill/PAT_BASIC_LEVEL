@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <math.h>
+
+bool isPrime(long digit){
+    for(int i=2;i<=sqrt(digit);i++){
+        if(digit%i==0){
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+    long digit;
+    int digit_lenth,bits;
+    char str[1100];
+
+    scanf("%d%d%*c",&digit_lenth,&bits);
+    gets(str);
+    for(int i=0;i<=digit_lenth-bits;i++){
+        digit=0;
+        for(int j=i;j<i+bits;j++){
+            digit=digit*10+str[j]-'0';
+        }
+        if(isPrime(digit)){
+            int k=i;
+            while(str[k++]=='0'){
+                ;
+            }
+            for(;k>i+1;k--){
+                printf("0");
+            }
+            printf("%ld",digit);
+            exit(0);
+        }
+    }
+    printf("404");
+    return 0;
+}
