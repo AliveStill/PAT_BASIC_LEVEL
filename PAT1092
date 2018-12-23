@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <stdbool.h>
+
+
+struct mooncake{
+    long label;
+    long amount;
+}*sum;
+
+int compare(const void *a ,const void *b){
+    if((*(struct mooncake*)b).amount-(*(struct mooncake*)a).amount){
+        return (*(struct mooncake*)b).amount-(*(struct mooncake*)a).amount;
+    }
+    else{
+        return (*(struct mooncake*)a).label-(*(struct mooncake*)b).label;
+    }
+}
+
+
+int main() {
+    long cake_cate,cities;
+
+    scanf("%ld%ld",&cake_cate,&cities);
+
+    sum=(struct mooncake *)malloc(sizeof(struct mooncake)*cake_cate);
+    for(int i=0;i<cake_cate;i++){
+        sum[i].label=i+1;
+        sum[i].amount=0;
+    }
+    for(int i=0;i<cities;i++){
+        for(int j=0;j<cake_cate;j++){
+            long x;
+            scanf("%ld",&x);
+            sum[j].amount+=x;
+        }
+    }
+    qsort(sum,(size_t)cake_cate,sizeof(struct mooncake),compare);
+    printf("%ld\n",sum[0].amount);
+    int count=0;
+    while(sum[count].amount==sum[count+1].amount){
+        count++;
+    }
+    for(int i=0;i<=count;i++){
+        if(i!=0){
+            printf(" %ld",sum[i].label);
+        }
+        else{
+            printf("%ld",sum[i].label);
+        }
+    }
+    free(sum);
+    return 0;
+}
