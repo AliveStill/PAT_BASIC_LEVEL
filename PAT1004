@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+
+struct people{
+    char name[15];
+    char label[15];
+    int grade;
+}*a;
+
+int compare(const void *a,const void *b){
+    return (*(struct people*)a).grade-(*(struct people*)b).grade;
+}
+
+int main(void){
+    int n;
+
+    scanf("%d",&n);
+    a=(struct people*)malloc(sizeof(struct people)*n);
+    assert(a);
+    for(int i=0;i<n;i++){
+        scanf("%s%s%d%*c",&(a[i].name),&(a[i].label),&(a[i].grade));
+    }
+    qsort(a,n,sizeof(struct people),compare);
+    printf("%s %s\n",a[n-1].name,a[n-1].label);
+    printf("%s %s",a[0].name,a[0].label);
+}
