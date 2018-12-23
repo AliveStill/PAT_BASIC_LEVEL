@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdbool.h>
+
+int a[100000];
+int count=0;
+
+int compare(const void *a,const void *b){
+    return *(int *)b-*(int *)a;
+}
+
+int main() {
+    int n;
+    int result[1000];
+
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        int x;
+        scanf("%d",&x);
+        result[i]=x;
+//      a[count++]=x;
+        while(x>1){
+            if(x%2==0){
+                x=x/2;
+            }
+            else{
+                x=(x*3+1)/2;
+            }
+            a[count++]=x;
+        }
+    }
+    qsort(a,count,sizeof(int),compare);
+    qsort(result,n,sizeof(int),compare);
+    int counter=0;
+    for(int i=0;i<n;i++){
+        if(bsearch(&(result[i]),a,count,sizeof(int),compare)){
+            ;
+        }
+        else{
+            if(counter){
+                printf(" %d",result[i]);
+            }
+            else{
+                printf("%d",result[i]);
+                counter++;
+            }
+        }
+    }
+    return 0;
+}
