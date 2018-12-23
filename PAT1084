@@ -1,0 +1,47 @@
+#include <stdio.h>
+#define SIZE 100000//经过测试，这里的size必须足够大
+
+int main() {
+    int a[SIZE];
+    int b[SIZE];
+    int n;
+
+    for(int i=0;i<SIZE;i++){
+        a[i]=EOF;
+        b[i]=a[i];
+    }
+    scanf("%d%d",&(a[0]),&n);
+    for(int i=0;i<n-1;i++){
+        int count=0;
+        while(a[count++]!=EOF){
+            ;
+        }
+        int counter=1,counter_place=0;
+        int k;
+        for(k=0;k<count-1;k++){
+            if(a[k]==a[k+1]){
+                counter++;
+            }
+            else{
+                b[counter_place++]=a[k];
+                b[counter_place++]=counter;
+                counter=1;
+            }
+        }
+        for(int j=0;j<counter_place;j++){
+            a[j]=b[j];
+        }
+        for(int j=counter_place;j<SIZE;j++){
+            a[j]=b[j]=EOF;
+        }
+    }
+    int counter=0;
+    while(a[counter++]!=EOF){
+        ;
+    }
+    for(int i=0;i<counter-1;i++){
+        printf("%d",a[i]);
+    }
+
+    return 0;
+}
