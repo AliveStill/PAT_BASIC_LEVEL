@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <math.h>
+
+int main() {
+    int n;
+    int *to_check;
+    int *with_to_check;
+
+    scanf("%d%*c",&n);
+    to_check=(int *)malloc(sizeof(int )*n);
+    assert(to_check);
+    with_to_check=(int *)malloc(sizeof(int )*n);
+    assert(with_to_check);
+    for(int i=0;i<n;i++){
+        scanf("%d",&(to_check[i]));
+    }
+    for(int i=0;i<n;i++){
+        label_for_head: if(i>=n){break;}
+        for(int j=1;j<10;j++){
+            int k;
+            for(k=1;pow(10,k)<to_check[i];k++){
+                ;//获取该数的位数
+            }
+            if((j*(to_check[i])*(to_check[i]))%(int)pow(10,k)==to_check[i]){
+                with_to_check[i]=j;
+                i++;
+                goto label_for_head;
+            }
+        }
+        with_to_check[i]=0;
+    }
+    for(int i=0;i<n;i++){
+        if(with_to_check[i]){
+            printf("%d %d\n",with_to_check[i],with_to_check[i]*to_check[i]*to_check[i]);
+        }
+        else{
+            puts("No");
+        }
+    }
+    return 0;
+}
