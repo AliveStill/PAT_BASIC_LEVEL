@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <math.h>
+#include <stdbool.h>
+
+int compare(const void *a,const void *b){
+    return *(int *)b-*(int *)a;
+}
+
+void bubble_sort(int *a,int n){
+    bool flag=true;
+    while(flag){
+        flag=false;
+        for(int i=0;i<n-1;i++){
+            if(a[i]<a[i+1]){
+                int j=a[i];
+                a[i]=a[i+1];
+                a[i+1]=j;
+                flag=true;
+            }
+        }
+    }
+
+}
+int main() {
+    int *number;
+    int n;
+
+    scanf("%d",&n);
+    number=(int *)malloc(sizeof(int)*n);
+    assert(number);
+    for(int i=0;i<n;i++){
+        int read;
+        scanf("%d",&read);
+        number[i]=abs(read-(i+1));
+    }
+    qsort(number,n,sizeof(int),compare);
+    //bubble_sort(number,n);//排序，实践表明不用附加冒泡排序也可以，但是鉴于快排不稳定，加上比较稳妥
+    int count=1;//计数器
+    for(int i=0;i<n-1;i++){
+        if(number[i]==number[i+1]){
+            count++;
+        }
+        else{
+            if(count>1){
+                printf("%d %d\n",number[i],count);
+            }
+            count=1;
+        }
+    }
+    if(count>1){
+        printf("%d %d",number[n-1],count);
+    }
+    free(number);
+
+    return 0;
+}
