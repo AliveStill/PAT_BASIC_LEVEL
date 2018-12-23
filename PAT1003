@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <stdbool.h>
+#include <string.h>
+
+bool check(char *str){
+    int countP=0,countT=0,countA=0;
+    for(int i=0;i<strlen(str);i++){
+        switch(str[i]){
+            case 'P':countP++;break;
+            case 'A':countA++;break;
+            case 'T':countT++;break;
+            default:return false;
+        }
+    }//判断是否有其他字符
+    if(countP==1&&countT==1&&countA>=1){
+        ;
+    }
+    else{
+        return false;
+    }
+    //至此，剩下的全部都是PAT组成的字符
+    char *P,*T;//标记字符串中P和T的位置
+    P=strchr(str,'P');
+    assert(P);
+    T=strchr(str,'T');
+    assert(T);
+    if(P>=T){
+        return false;
+    }
+    int posP=(P-str)/sizeof(char);
+    int posT=(T-str)/sizeof(char);//由指针定位改为数值定位
+    if((posP)*(posT-posP-1)==(strlen(str)-posT-1)){
+        return true;
+    }
+    else{
+        return false;
+    }//精确定位，根据位置关系求解是否满足指定条件
+}
+int main() {
+    char str[110]={'\0',};
+    char ch;
+    int n,*a;
+
+    scanf("%d%*c",&n);
+    a=(int *)malloc(sizeof(int )*n);
+    for(int i=0;i<n;i++){
+        gets(str);
+        if(check(str)){
+            a[i]=1;
+        }
+        else{
+            a[i]=0;
+        }
+    }
+    for(int i=0;i<n;i++){
+        if(a[i]==1){
+            puts("YES");
+        }
+        else{
+            puts("NO");
+        }
+    }
+    return 0;
+}
