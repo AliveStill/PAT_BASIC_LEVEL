@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdbool.h>
+
+void bubble_sort(int *a,int n){
+    bool flag=true;
+    while(flag){
+        flag=false;
+        for(int i=0;i<n-1;i++){
+            if(a[i]>a[i+1]){
+                int k=a[i];
+                a[i]=a[i+1];
+                a[i+1]=k;
+                flag=true;
+            }
+        }
+    }
+}
+
+int compare(const void *a,const void *b){
+    return *(int *)a-*(int *)b;
+}
+int main() {
+    int *a;
+    int n, count = 0;
+
+    scanf("%d", &n);
+    a = (int *) malloc(sizeof(int) * n);
+    for (int i = 1; i <= n; i++) {
+        int number;
+        number = (int) (floor((double)i / 2) + floor((double)i / 3) + floor((double)i / 5));
+        if (bsearch(&number, a, count, sizeof(int), compare)) {
+        } else {
+            a[count++] = number;
+//          qsort(a, count, sizeof(int), compare);值得注意的是这里冒泡比快排的效率更高
+            bubble_sort(a,count);
+        }
+    }
+    printf("%d",count);
+    return 0;
+}
