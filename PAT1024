@@ -1,40 +1,72 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+
+void expressionPositive(char *str){//处理指数是正数的情况
+    int posPot=(strchr(str,'+')-str)/sizeof(char);
+    int expression=0;
+    for(int i=posPot+1;i<strlen(str);i++){
+        expression=expression*10+str[i]-'0';
+    }
+    int len=(strchr(str,'E')-strchr(str,'.'))/sizeof(char)-1;
+    if(expression>=len){//如果足够容纳,输出数字部分，然后补齐
+        for(int i=0;i<posPot-1;i++){
+            if(isdigit(str[i])){
+                putchar(str[i]);
+            }
+        }
+        for(int i=0;i<expression-len;i++){
+            putchar('0');
+        }
+        return ;
+    }
+    else{
+        for(int i=0;i<posPot-1;i++){
+            if(isdigit(str[i])){
+                putchar(str[i]);
+            }
+            if(i==expression+1){
+                putchar('.');
+            }
+        }
+        return ;
+    }
+}
+
+void expressionNegative(char *str){//处理指数是负数的情况
+    int posMinus=(strchr(str,'-')-str)/sizeof(char);
+    int expression=0;//获取指数
+    for(int i=posMinus+1;i<strlen(str);i++){
+        expression=expression*10+str[i]-'0';
+    }
+    printf("0.");
+    for(int i=0;i<expression-1;i++){
+        putchar('0');
+    }
+    for(int i=0;i<posMinus-1;i++){
+        if(isdigit(str[i])){
+            putchar(str[i]);
+        }
+    }
+}
+
 
 int main() {
-    int i,j,k=0;
-    int a[10];
+    char symbol;//保存底数符号
+    char str[10000];
 
-    for(i=0;i<10;i++){
-        scanf("%d",&(a[i]));
-    } 
-			
-    if(a[0]==0){
-    	for(i=1;i<10;i++){
-    		if(a[i]!=0){
-    			for(j=0;j<a[i];j++){
-    				printf("%d",i);
-				}
-			}
-		}
-	}
-	
-	else{
-		while(a[++k]==0){
-			;
-		}							//此时标记k所对应的为第一个不为0的数 
-		printf("%d",k);
-		a[k]--;
-		for(i=0;i<a[0];i++){
-			printf("0");
-		}
-		for(i=1;i<10;i++){
-    		if(a[i]!=0){
-    			for(j=0;j<a[i];j++){
-    				printf("%d",i);
-				}
-			}
-		}
-	}
+    symbol=getchar();
+    gets(str);
+    if(symbol=='-'){
+        putchar(symbol);
+    }
+    if(strchr(str,'+')){
+        expressionPositive(str);
+    }
+    else{
+        expressionNegative(str);
+    }
 
     return 0;
 }
