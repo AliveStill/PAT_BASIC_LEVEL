@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+
+typedef struct students{
+    int cap;//才分
+    int mor;//德分
+    char label[10];
+}tstudents;
+
+int compare(const void *a,const void *b){
+    tstudents aa=*(tstudents *)a;
+    tstudents bb=*(tstudents *)b;
+    if(aa.mor+aa.cap!=bb.mor+bb.cap){
+        return (bb.mor+bb.cap)-(aa.mor+aa.cap);
+    }
+    else if(aa.mor!=bb.mor){
+        return bb.mor-aa.mor;
+    }
+    else{
+        return strcmp(aa.label,bb.label);
+    }
+}
+
+int main() {
+    int n;
+    int count=0;//录取总人数
+    int ad_limit,ad_pri;
+    tstudents *a;
+    tstudents *class1,*class2,*class3,*class4;
+    int count1=0,count2=0,count3=0,count4=0;//各批次录取情况
+
+    scanf("%d%d%d%*c",&n,&ad_limit,&ad_pri);
+    a=(tstudents *)malloc(sizeof(tstudents)*n);
+    assert(a);
+    class1=(tstudents *)malloc(sizeof(tstudents)*n);
+    assert(class1);
+    class2=(tstudents *)malloc(sizeof(tstudents)*n);
+    assert(class2);
+    class3=(tstudents *)malloc(sizeof(tstudents)*n);
+    assert(class3);
+    class4=(tstudents *)malloc(sizeof(tstudents)*n);
+    assert(class4);
+    for(int i=0;i<n;i++){
+        scanf("%s%d%d%*c",&(a[i].label),&(a[i].mor),&(a[i].cap));
+    }
+    for(int i=0;i<n;i++){
+        if(a[i].cap<ad_limit||a[i].mor<ad_limit){
+            continue;
+        }
+        else{
+            count++;
+        }
+        if(a[i].cap>=ad_pri&&a[i].mor>=ad_pri){
+            class1[count1++]=a[i];
+        }
+        else if(a[i].mor>=ad_pri&&a[i].cap<ad_pri){
+            class2[count2++]=a[i];
+        }
+        else if(a[i].cap<=a[i].mor&&a[i].mor<ad_pri){
+            class3[count3++]=a[i];
+        }
+        else{
+            class4[count4++]=a[i];
+        }
+    }
+    qsort(class1,count1,sizeof(tstudents),compare);
+    qsort(class2,count2,sizeof(tstudents),compare);
+    qsort(class3,count3,sizeof(tstudents),compare);
+    qsort(class4,count4,sizeof(tstudents),compare);
+    printf("%d\n",count);
+    for(int i=0;i<count1;i++){
+        printf("%s %d %d\n",class1[i].label,class1[i].mor,class1[i].cap);
+    }
+    for(int i=0;i<count2;i++){
+        printf("%s %d %d\n",class2[i].label,class2[i].mor,class2[i].cap);
+    }
+    for(int i=0;i<count3;i++){
+        printf("%s %d %d\n",class3[i].label,class3[i].mor,class3[i].cap);
+    }
+    for(int i=0;i<count4;i++){
+        printf("%s %d %d\n",class4[i].label,class4[i].mor,class4[i].cap);
+    }
+    free(a);
+    free(class1);
+    free(class2);
+    free(class3);
+    free(class4);
+
+    return 0;
+}
