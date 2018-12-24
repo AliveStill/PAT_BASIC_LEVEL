@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
+
+char str_to_print[7][4]={"MON","TUE","WED","THU","FRI","SAT","SUN"};
+int main() {
+    char str[4][65];
+    int j=0,k=0;
+    char mess1,mess2,mess3;
+    bool flag=true;
+
+    for(int i=0;i<4;i++){
+        gets(str[i]);
+    }
+    while(j<strlen(str[0])&&j<strlen(str[1])){
+        if(str[0][j]==str[1][j]&&isupper(str[0][j])&&flag&&str[0][j]>='A'&&str[0][j]<='G'){
+            mess1=str[0][j];
+            flag=false;
+            j++;
+            continue;
+        }
+        if(flag==false&&k==0&&str[0][j]==str[1][j]&&((str[0][j]>='0'&&
+                str[0][j]<='9')||(str[0][j]>='A'&&str[0][j]<='N'))){
+                mess2=str[0][j];
+                k++;
+                break;
+        }
+        j++;
+    }
+    j=0;
+    while(j<strlen(str[2])&&j<strlen(str[3])){
+        if(str[2][j]==str[3][j]&&isalpha(str[2][j])){
+            mess3=str[2][j];
+            break;
+        }
+        j++;
+    }
+//    printf("%c %c %c\n",mess1,mess2,mess3);
+    printf("%s ",str_to_print[mess1-'A']);
+    int hour=(isalpha(mess2))?(tolower(mess2)-'a'+10):mess2-'0';
+    printf("%02d:",hour);
+    printf("%02d",j);
+    return 0;
+}
