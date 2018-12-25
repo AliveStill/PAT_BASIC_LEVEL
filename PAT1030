@@ -1,46 +1,49 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <stdbool.h>
 
-
-void sort(int *a,int n){//冒泡排序 
-	int i,ex_number;
-	bool flag=true;
-	
-	while(flag){
-		flag=false;
-		for(i=0;i<n-1;i++){
-			if(a[i]>a[i+1]){
-				ex_number=a[i];
-				a[i]=a[i+1];
-				a[i+1]=ex_number;
-				flag=true;
-			}
-		}
-	}
+int compare(const void *a, const void *b){
+    return (*(int *)a-*(int *)b);
 }
-
-int judge(int *a,int m,int n){
-	int i;
-	for(i=0;i<m;i++){
-		if(a[i]*m>a[n-1]){
-			break;
-		}
-	}
-	return i;
-}
-
 
 int main(void){
-	int i,j,k;
-	int n,m;
-	int *a;
-	
-	scanf("%d%d",&n,&m);
-	a=(int *)malloc(sizeof(int)*n);
-	for(i=0;i<n;i++){
-		scanf("%d",&(a[i]));
-	}
-	sort(a,n);
-	printf("%d",n-judge(a,m,n));	
+    long long *a;
+
+    long long n,p;//数足够大
+    int count=0;
+    int unfitPos=0;
+
+    scanf("%lld%lld",&n,&p);
+    a=(long long *)malloc(sizeof(long long)*n);
+    assert(a);
+    for(int i=0;i<n;i++){
+        scanf("%lld",&(a[i]));
+    }
+    if(n==1){
+        printf("1");
+        exit(0);
+    }
+    qsort(a,(size_t)n,sizeof(long long),compare);
+    //之后才是程序和核心部分
+    if(a[0]*p>=a[n-1]){
+        printf("%lld",n);
+        exit(0);
+    }
+    for(int i=0;i<n;i++){
+        while(unfitPos!=n&&a[i]*p>=a[unfitPos]){
+            unfitPos++;
+        }
+        if(unfitPos==n){
+            count=(count>unfitPos-i)?count:unfitPos-i;
+            break;
+        }
+        else{
+            count=(count>unfitPos-i)?count:unfitPos-i;
+        }
+    }
+
+    printf("%d",count);
+    free(a);
+    return 0;
 }
