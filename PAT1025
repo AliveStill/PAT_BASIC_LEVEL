@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#define swap(A,B){ TlinkList k=A;A=B;B=k;}
+
+
+typedef struct linkedList{
+    int address;
+    int nextAddress;
+    long value;
+}TlinkList;
+
+TlinkList *a;
+
+int main(void){
+    int firstAddress,sum,span;
+    int count=0;
+
+    scanf("%d%d%d",&firstAddress,&sum,&span);
+    a=(TlinkList *)malloc(sizeof(TlinkList)*sum);
+    assert(a);
+    for(int i=0;i<sum;i++){
+        scanf("%d%ld%d",&(a[i].address),&(a[i].value),&(a[i].nextAddress));
+    }
+    for(int i=0;i<sum;i++){
+        for(int j=i;j<sum;j++){
+            if(a[j].address==(i?a[i-1].nextAddress:firstAddress)){
+                swap(a[i],a[j]);//交换a,b两项，连接伪链表
+                count++;
+                if(a[i].nextAddress==-1){
+                    goto label_to_jump_out;
+                }
+                break;
+            }
+        }
+    }
+    label_to_jump_out: ;//设置循环的跳出条件，减少冗余，这里对应最后一个测试点
+    for(int i=0;i+span<=count;i+=span)//交换结构体
+    {
+        for(int j=i;j<(2*i+span)/2;j++){
+            swap(a[j],a[2*i+span-j-1]);
+        }
+    }
+    for(int i=0;i<count;i++){
+        if(i!=count-1){
+            printf("%05d %ld %05d\n",a[i].address,a[i].value,a[i+1].address);
+        }
+        else{
+            printf("%05d %ld -1",a[i].address,a[i].value);
+        }
+    }
+    free(a);
+
+    return 0;
+}
