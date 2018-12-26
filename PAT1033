@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+int main() {
+    char output[100010];
+    int read[41]={0,};
+    char ch;
+    int count=0;
+
+    while((ch=getchar())!='\n'){
+        if(ch=='+'){
+            read[0]=1;
+        }//读入上档键，指定区域为0号位
+        else if(ch==','){
+            read[38]=1;
+        }
+        else if(ch=='.'){
+            read[39]=1;
+        }
+        else if(ch=='-'){
+            read[40]=1;
+        }//读入3个无义符号键，指定区域为38~40
+        else if(isdigit(ch)){
+            read[ch-'0'+1]=1;
+        }//读入数字，指定区域为1~10号位
+        else if(isupper(ch)){
+            read[ch-'A'+11]=1;
+        }//读入大写字母，指定区域为11~36号位
+        else if(ch=='_'){
+            read[37]=1;
+        }//读入空格键，指定区域为37号位
+    }
+
+    while((ch=getchar())!='\n'){
+        if(isupper(ch)){
+            if(read[0]==0&&read[ch-'A'+11]==0){
+                output[count++]=ch;
+            }
+        }
+        else if(islower(ch)){
+            if(read[ch-'a'+11]==0){
+                output[count++]=ch;
+            }
+        }
+        else if(isdigit(ch)){
+            if(read[ch-'0'+1]==0){
+                output[count++]=ch;
+            }
+        }
+        else if(ch=='_'){
+            if(read[37]==0){
+                output[count++]=ch;
+            }
+        }
+        else if(ch==','&&read[38]==0){
+            output[count++]=ch;
+        }
+        else if(ch=='.'&&read[39]==0){
+            output[count++]=ch;
+        }
+        else if(ch=='-'&&read[40]==0){
+            output[count++]=ch;
+        }
+    }
+    if(count==0){
+        puts("");
+        exit(0);
+    }
+    for(int i=0;i<count;i++){
+        printf("%c",output[i]);
+    }
+
+    return 0;
+}
