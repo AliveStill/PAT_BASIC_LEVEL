@@ -1,79 +1,69 @@
-/*双向遍历求一组未排序数中能够成为主元的数的个数，并将其打印出来*/
+/*
+ * 着重讲一下下面这种判断是否为主元的方法，先将副本冒泡排序，
+ * 再逐个遍历是否有相等元素，遍历的同时将当前元素的所有前置项
+ * 都进行一次简单排序，保持最大的元素位于最前，再对比该最大值与
+ * 当前元素的大小关系，若当前元素大于等于最值元素，则该元素是主元
+ * 并记录，否则不是。
+ *
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
 
 int compare(const void *a,const void *b){
-	return *(int *)a-*(int *)b;
+    return *(int *)a-*(int *)b;
 }
 
-int main(void){
-	int *a,*b;
-	int n;
-	int i;
-	int count=0;
-	int flag=true;
-	
-	scanf("%d",&n);
-	a=(int *)malloc(sizeof(int)*n);
-	b=(int *)malloc(sizeof(int)*n);
-	for(i=0;i<n;i++){
-		scanf("%d",&(a[i]));
-	}
-	int back_index=0;int forward_index=n-1;//动态记录符合条件的值，包括前向计数和后向计数 
-	int current_back_index=0;int current_forward_index=n-1;
-	
-	
-	while(current_forward_index>current_back_index){
-		for(i=current_back_index;i<=forward_index;i++){
-			if(a[i]<a[current_back_index]){
-				flag=false; 
-				break;
-			}
-		}
-		if(flag){
-			b[count++]=a[current_back_index];
-			back_index=current_back_index;
-		}
-		else{
-			flag=true;
-		}
-		current_back_index++; 
-		if(forward_index<back_index&&n%2==1){//如果格局不满足条件，及时退出循环 
-			break;
-		} 
-		for(i=current_forward_index;i>=back_index;i--){
-			if(a[i]>a[current_forward_index]){
-				flag=false;
-				break;
-			}
-		}
-		if(flag){
-			forward_index=current_forward_index;
-			b[count++]=a[current_forward_index];
-		}
-		else{
-			flag=true; 
-		} 
-		current_forward_index--;
-	}
-	
-	if(count){
-		printf("%d\n",count);
-		qsort(b,count,sizeof(int),compare);
-	}
-	else{
-		printf("%d",count);
-	}
-	for(i=0;i<count;i++){
-		if(i){
-			printf(" %d",b[i]);	
-		}
-		else{
-			printf("%d",b[i]);
-		}
-	}
-	
+
+int main() {
+    int n;
+    int *a,*b,*c;
+    int count=0;
+
+    scanf("%d",&n);
+    a=(int *)malloc(sizeof(int )*n);
+    assert(a);
+    b=(int *)malloc(sizeof(int )*n);
+    assert(a);
+    c=(int *)malloc(sizeof(int )*n);
+    assert(c);
+    for(int i=0;i<n;i++){
+        scanf("%d",&(a[i]));
+        b[i]=a[i];
+    }
+    qsort(b,(size_t)n,sizeof(int),compare);
+    int max_pre=a[0];
+    for(int i=0;i<n;i++){
+        if(a[i]==b[i]&&a[i]>=max_pre){
+            c[count++]=b[i];
+        }
+        if(i&&a[i-1]>a[i]){
+            int k=a[i-1];
+            a[i-1]=a[i];
+            a[i]=k;
+        }
+        max_pre=a[i];
+    }
+    if(count==0){
+        printf("0\n\n");
+        free(a);
+        free(b);
+        free(c);
+        exit(0);
+    }
+    printf("%d\n",count);
+    for(int i=0;i<count;i++){
+        if(i){
+            printf(" %d",c[i]);
+        }
+        else{
+            printf("%d",c[i]);
+        }
+    }
+    free(a);
+    free(b);
+    free(c);
+
+    return 0;
 }
-	
-	
