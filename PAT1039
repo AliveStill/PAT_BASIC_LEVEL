@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int compare(const void *a,const void *b){
+    return *(char *)a-*(char *)b;
+}
+
+
+int main() {
+    char beed[1001];
+    char want[1001];
+    char ch;
+    int i=0,j=0,count=0;
+
+    gets(beed);
+    gets(want);
+    qsort(beed,strlen(beed),sizeof(char ),compare);
+    qsort(want,strlen(want),sizeof(char ),compare);
+    while(beed[i]!='\0'&&want[j]!='\0'){
+        if(beed[i]==want[j]){
+            i++;
+            j++;
+            count++;
+        }
+        else if(beed[i]>want[j]){
+            j++;
+        }
+        else{
+            i++;
+        }
+    }
+    if(count==strlen(want)){
+        printf("Yes %d",(int)strlen(beed)-(int)strlen(want));
+    }
+    else{
+        printf("No %d",(int)strlen(want)-count);
+    }
+
+    return 0;
+}
