@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct shoot{
+    int xy;
+    char label[5];
+};
+
+int main(void){
+    struct shoot read;
+    struct shoot max,min;
+    int n;
+    int x,y;
+
+    scanf("%d%*c",&n);
+    for(int i=0;i<n;i++){
+        scanf("%s%d%d%*c",read.label,&x,&y);
+        read.xy=x*x+y*y;
+        if(i==0){
+            max=read;
+            min=read;
+        }
+        else{
+            if(read.xy>max.xy){
+                max=read;
+            }
+            if(read.xy<min.xy){
+                min=read;
+            }
+        }
+    }
+    printf("%s %s",min.label,max.label);
+
+    return 0;
+}
