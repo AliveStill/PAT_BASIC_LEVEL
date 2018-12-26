@@ -1,197 +1,79 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <ctype.h>
 #include <string.h>
-#include <stdbool.h>
 
-char mars_upper[13][5]={
-        "tret","tam","hel","maa","huh","tou","kes","hei","elo","syy","lok","mer","jou"
-};
+char strHigh[13][5]={"tret","tam","hel","maa","huh","tou","kes",
+                     "hei","elo","syy","lok","mer","jou"};
+char strLow[13][5]={"tret","jan","feb","mar","apr","may","jun","jly",
+                    "aug","sep","oct","nov","dec"};
 
-char mars_lower[13][5]={
-        "tert","jan","feb","mar","apr","may","jun","jly","aug","sep","oct","nov","dec"
-};
-
-enum mars_upper_alp{
-	tret,tam,hel,maa,huh,tou,kes,hei,elo,syy,lok,mer,jou
-};
-
-
-void ex_mars_to_planet_carrybit(char *a);
-void ex_mars_to_planet_no_carrybit(char *a);
-void ex_planet_to_mars_carrybit(char *a);
-void ex_planet_to_mars_no_carrybit(char *a);
-void ex_lang(char *[8],int );
-int switch_planet(char *a,bool flag);
-bool is_hidden_upper(char *a);
-
-
-int main(void){
-    int n;
-    char ch;
-    char **a;
-    int count=0,i=0,j=0;
-    bool flag=true;
-
-    scanf("%d",&n);
-    getchar();//读取换行符
-    a=(char **)malloc(sizeof(char )*8*n);
-    for(int i=0;i<n;i++){
-        a[i]=(char *)malloc(sizeof(char )*8);
-        if(a[i]==NULL){
-            puts("Sorry, fail to distribute the memory.");
-        }
-    }
-    while((ch=getchar())!=EOF){
-        a[i][j++]=ch;
-        if(ch=='\n'){
-            a[i][j-1]='\0';
-            i++;
-            j=0;
-        }
-    }//读取数据 */
-    /*for(i=0;i<n;i++){
-        printf("%s",a[i]);
-    } */
-    ex_lang(a,n);
-}
-
-
-bool isNumber(char ch){
-    if(ch>='0'&&ch<='9'){
-        return true;
+void toMars(int number){//将地球文字转化为火星文
+    if(number<=12){
+        printf("%s",strLow[number]);
     }
     else{
-        return false;
+        printf("%s",strHigh[number/13]);
+        if(number%13!=0){
+            printf(" %s",strLow[number%13]);
+        }
     }
 }
 
-void ex_lang(char *a[8],int n){
-    int i=0,j;
-    for(i=0;i<n;i++){
-        if(isNumber(a[i][0])){//如果是数字
-            if(strlen(a[i])<=2){
-                if(strlen(a[i])<=1||a[i][1]<='2'){
-                    ex_planet_to_mars_no_carrybit(a[i]);
-                }
-                else{
-                    ex_planet_to_mars_carrybit(a[i]);
-                }
+void toPla(char *str){//将火星文字转化为地球文字
+    if(strlen(str)<=4){
+        for(int i=0;i<13;i++){
+            if(strcmp(str,strHigh[i])==0){
+                printf("%d",i*13);
+                return ;
             }
-            else{
-                ex_planet_to_mars_carrybit(a[i]);
+            else if(strcmp(str,strLow[i])==0){
+                printf("%d",i);
+                return ;
             }
         }
-        else{//否则为火星文
-            if(strlen(a[i])<=3){//仅有一位
-                ex_mars_to_planet_no_carrybit(a[i]);
+    }//否则必有一个高位一个低位
+    int number=0;
+    for(int i=0;i<13;i++){
+        if(strstr(str,strHigh[i])){
+            number+=i*13;
+        }
+        if(strstr(str,strLow[i])){
+            number+=i;
+        }
+    }
+    printf("%d",number);
+}
+
+int main() {
+    char **str;
+    int n;
+
+    scanf("%d%*c",&n);
+    str=(char **)malloc(sizeof(char )*9*n);
+    assert(str);
+    for(int i=0;i<n;i++){
+        str[i]=(char *)malloc(sizeof(char)*9);
+        assert(str[i]);
+        gets(str[i]);
+    }
+    for(int i=0;i<n;i++){
+        if(isdigit(str[i][0])){
+            int number=0;
+            for(int j=0;j<strlen(str[i]);j++){
+                number=number*10+str[i][j]-'0';
             }
-            else{
-                ex_mars_to_planet_carrybit(a[i]);
-            }
+            toMars(number);
+        }
+        else{
+            toPla(str[i]);
         }
         if(i!=n-1){
             puts("");
         }
     }
-}
+    free(str);
 
-void ex_planet_to_mars_no_carrybit(char *a){
-    int n;
-    if(strlen(a)==2){
-        n=(a[0]-'0')*10+a[1]-'0';
-    }
-    else{
-        n=(a[0]-'0');
-    }
-    printf("%s",mars_lower[n]);
-}
-
-void ex_planet_to_mars_carrybit(char *a){
-    int n=strlen(a);
-    int i,index=10;
-    int number=0;
-    for(i=0;i<n;i++){
-        number=index*number+a[i]-'0';
-    }
-    printf("%s ",mars_upper[number/13]);
-    printf("%s",mars_lower[number%13]);
-}
-
-void ex_mars_to_planet_no_carrybit(char *a){
-	printf("%d",switch_planet(a,is_hidden_upper(a)));	
-}
-
-void ex_mars_to_planet_carrybit(char *a){
-	int i;
-	int x1,x2;
-	char str1[4],str2[5];
-		for(i=0;i<3;i++){
-			str1[i]=a[i];
-		}
-		str1[3]='\0';
-		x1=switch_planet(str1,0);
-		for(i=0;i<4;i++){
-			str2[i]=a[i+4];
-		}
-		str2[4]='\0';
-		x2=switch_planet(str2,0);
-		printf("%d",x1*13+x2);
-}
-
-int switch_planet(char *a,bool flag){
-	int remainder=0;
-	if(flag){
-		remainder=12;
-	}
-	if(strcmp(a,"tret")==0){
-		return 0+remainder;
-	}
-	else if(strcmp(a,"jan")==0||strcmp(a,"tam")==0){
-		return 1+remainder;
-	}
-	else if(strcmp(a,"feb")==0||strcmp(a,"hel")==0){
-		return 2+remainder;
-	}
-	else if(strcmp(a,"mar")==0||strcmp(a,"maa")==0){
-		return 3+remainder;
-	}
-	else if(strcmp(a,"apr")==0||strcmp(a,"huh")==0){
-		return 4+remainder;
-	}
-	else if(strcmp(a,"may")==0||strcmp(a,"tou")==0){
-		return 5+remainder;
-	}
-	else if(strcmp(a,"jun")==0||strcmp(a,"kes")==0){
-		return 6+remainder;
-	}
-	else if(strcmp(a,"jly")==0||strcmp(a,"hei")==0){
-		return 7+remainder;
-	}
-	else if(strcmp(a,"aug")==0||strcmp(a,"elo")==0){
-		return 8+remainder;
-	}
-	else if(strcmp(a,"sep")==0||strcmp(a,"syy")==0){
-		return 9+remainder;
-	}
-	else if(strcmp(a,"oct")==0||strcmp(a,"lok")==0){
-		return 10+remainder;
-	}
-	else if(strcmp(a,"nov")==0||strcmp(a,"mer")==0){
-		return 11+remainder;
-	}
-	else if(strcmp(a,"dec")==0||strcmp(a,"jou")==0){
-		return 12+remainder;
-}
-}
-
-bool is_hidden_upper(char *a){
-	if(strcmp(a,"tam")==0||strcmp(a,"hel")==0||strcmp(a,"maa")==0
-	||strcmp(a,"huh")==0||strcmp(a,"tou")==0||strcmp(a,"kes")==0||
-	strcmp(a,"hei")==0||strcmp(a,"elo")==0||strcmp(a,"syy")==0
-	||strcmp(a,"lok")==0||strcmp(a,"mer")==0||strcmp(a,"jou")==0){
-		return 1;
-	}
-	else{
-		return 0;
-	}
+    return 0;
 }
