@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char a[201]={'\0'},b[201]={'\0'};
+    char c[201]={'\0',},d[201]={'\0',};
+    char ch;
+    int i=0,j=0;
+
+    scanf("%s",c);
+    while(c[i]!='\0'){
+        i++;
+    }
+    for(int k=i-1;k>=0;k--){
+        a[200-(i-1-k)]=c[k];
+    }
+    scanf("%s",d);
+    while(d[j]!='\0'){
+        j++;
+    }
+    for(int k=j-1;k>=0;k--){
+        b[200-(j-1-k)]=d[k];
+    }
+    for(int k=200;k>200-i;k--){
+        if(b[k]=='\0'){
+            b[k]='0';
+        }
+        if(k%2==0){//处理奇数位
+            int carrybit=(a[k]-'0'+b[k]-'0')%13;
+            if(carrybit>=10){
+                switch(carrybit){
+                    case 10:b[k]='J';break;
+                    case 11:b[k]='Q';break;
+                    case 12:b[k]='K';break;
+                }
+            }
+            else{
+                b[k]=carrybit+'0';
+            }
+        }
+        else{//处理偶数位
+            b[k]=b[k]-a[k]+'0';
+            if(b[k]<'0'){
+                b[k]+=10;
+            }
+        }
+    }
+    for(int k=(i>j)?201-i:201-j;k<201;k++){
+        printf("%c",b[k]);
+    }
+
+    return 0;
+}
