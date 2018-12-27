@@ -1,0 +1,51 @@
+/*
+ * 这题本身难度很小，但是对精度的要求很高
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+typedef struct {
+    double price;
+    double value;
+    double cap;
+}mooncake;
+
+int compare(const void *a,const void *b){
+    return (*(mooncake *)b).price-(*(mooncake *)a).price>1e-5?1:-1;
+}
+
+int main(void){
+    int cate,com;
+    mooncake *a;
+    int count=0;
+    double profit=0;
+
+    scanf("%d%d",&cate,&com);
+    a=(mooncake*)malloc(sizeof(mooncake)*cate);
+    assert(a);
+    for(int i=0;i<cate;i++){
+        scanf("%lf",&(a[i].cap));
+    }
+    for(int i=0;i<cate;i++){
+        scanf("%lf",&(a[i].value));
+        a[i].price=a[i].value/a[i].cap;
+    }
+    qsort(a,cate,sizeof(mooncake),compare);
+    while(com>0&&(count<cate)){
+        if(com>=a[count].cap){
+            profit+=a[count].value;
+            com-=a[count].cap;
+            count++;
+        }
+        else{
+            profit+=com*a[count].price;
+            com-=a[count].cap;
+            count++;
+        }
+    }
+    printf("%.2lf",profit);
+    free(a);
+
+    return 0;
+}
