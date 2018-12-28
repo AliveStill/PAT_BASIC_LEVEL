@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+int main(void){
+    char face[10][5];
+    char hands[10][5];
+    char eyes[10][5];
+    int countHands=0,countFaces=0,countEyes=0;
+    char ch;
+    int **number,n;
+
+    while((ch=getchar())!='\n'){
+        if(ch=='['){
+            scanf("%[^]]",hands[countHands++]);
+        }
+    }
+    while((ch=getchar())!='\n'){
+        if(ch=='['){
+            scanf("%[^]]",eyes[countEyes++]);
+        }
+    }
+    while((ch=getchar())!='\n'){
+        if(ch=='['){
+            scanf("%[^]]",face[countFaces++]);
+        }
+    }
+
+    scanf("%d",&n);
+    number=(int **)malloc(sizeof(int )*n*5);
+    assert(number);
+    for(int i=0;i<n;i++){
+        number[i]=(int *)malloc(sizeof(int)*5);
+        assert(number[i]);
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<5;j++){
+            scanf("%d",&(number[i][j]));
+        }
+    }//采集数据
+    for(int i=0;i<n;i++){
+        label_loop_for_head: if(i>=n){ break; };
+        for(int j=0;j<5;j++) {
+            if (j == 0 || j == 4) {
+                if(number[i][j]>0&&number[i][j]<=countHands){
+                    ;
+                }
+                else{
+                    puts("Are you kidding me? @\\/@");
+                    {
+                        i++;
+                        goto label_loop_for_head;
+                    }
+                }
+
+            } else if (j == 1 || j == 3) {
+                if(number[i][j]>0&&number[i][j]<=countEyes){
+                    ;
+                }
+                else{
+                    puts("Are you kidding me? @\\/@");
+                    {
+                        i++;
+                        goto label_loop_for_head;
+                    }
+                }
+            } else if (j == 2) {
+                if(number[i][j]>0&&number[i][j]<=countFaces){
+                    ;
+                }
+                else {
+                    puts("Are you kidding me? @\\/@");
+                    {
+                        i++;
+                        goto label_loop_for_head;
+                    }
+                }
+            }
+        }
+        printf("%s(%s%s%s)%s\n",hands[number[i][0]-1],eyes[number[i][1]-1],face[number[i][2]-1],
+               eyes[number[i][3]-1],hands[number[i][4]-1]);
+    }
+
+    for(int i=0;i<n;i++){
+        free(number[i]);
+    }
+    free(number);
+
+    return 0;
+}
