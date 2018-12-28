@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <ctype.h>
+#include <stdbool.h>
+
+
+typedef struct{
+    int score;
+    int countStandardOptions;
+    int countOptions;
+    int standardOptions[5];
+}judgements;
+
+typedef struct{
+    int countStudentOptions;
+    int grades;
+    int options[5];
+}students;
+
+typedef struct{
+    int label;
+    int counts;
+}wrongNumber;
+
+judgements a[100];
+students b[1000];
+wrongNumber c[100];
+
+int compare(const void *a,const void *b){
+    if((*(wrongNumber *)a).counts==(*(wrongNumber *)b).counts){
+        return (*(wrongNumber*)a).label-(*(wrongNumber*)b).label;
+    }
+    else{
+        return (*(wrongNumber*)b).counts-(*(wrongNumber*)a).counts;
+    }
+}
+
+int main() {
+    int countJudges, countStudents;
+    bool flagSimple=true;
+
+    for(int i=0;i<100;i++){
+        c[i].label=i+1;
+        c[i].counts=0;
+    }//初始化最终的结果结构体数组，用于保存错误答案
+    scanf("%d%d%*c",&countStudents,&countJudges);
+    for(int i=0;i<countJudges;i++){
+        for(int j=0;j<5;j++){
+            a[i].standardOptions[j]=0;//初始化
+        }
+        scanf("%d%d%d%*c",&(a[i].score),&(a[i].countOptions),
+                    &(a[i].countStandardOptions));
+        char ch;
+        while((ch=getchar())!='\n'){
+            if(isalpha(ch)){
+                a[i].standardOptions[tolower(ch)-'a']=1;//以其状态表示正确与否，正确为1，不正确为0
+            }
+        }
+    }//读入选择题答案并进行评估
+    for(int i=0;i<countStudents;i++){
+        b[i].grades=0;
+        for(int j=0;j<countJudges;j++) {
+            for(int y=0;y<5;y++){
+                b[i].options[y]=0;
+            }//初始化
+            char ch;
+            ch=getchar();
+            while (ch!='(') {
+                ch=getchar();
+            }
+            int count=0,k=0;
+            ch=getchar();
+            if(isdigit(ch)){
+                count=ch-'0';
+                k=count;
+            }
+            else{
+                exit(0);
+            }
+            while(k>0){
+                ch=getchar();
+                if(isalpha(ch)){
+                    b[i].options[ch-'a']=1;
+                    k--;
+                }
+            }
+            if(count==a[j].countStandardOptions){
+                bool flag=true;
+                for(int w=0;w<5;w++){
+                    if(a[j].standardOptions[w]==b[i].options[w]){
+                        ;
+                    }
+                    else{
+                        flag=false;
+                        break;
+                    }
+                }
+                if(flag){
+                    b[i].grades+=a[j].score;
+                }
+                else{
+                    c[j].counts+=1;
+                    flagSimple=false;
+                }
+            }
+            else{
+                c[j].counts+=1;
+                flagSimple=false;
+            }
+        }
+    }//读入学生选择题选项
+    for(int i=0;i<countStudents;i++){
+        printf("%d\n",b[i].grades);
+    }
+    qsort(c,(size_t)countJudges,sizeof(wrongNumber),compare);
+    if(flagSimple){
+        printf("Too simple");
+    }
+    else{
+        printf("%d",c[0].counts);
+        for(int i=0;i<countJudges;i++){
+            printf(" %d",c[i].label);
+            if(i==countJudges-1||c[i].counts!=c[i+1].counts){
+                break;
+            }
+        }
+    }
+
+    return 0;
+}
