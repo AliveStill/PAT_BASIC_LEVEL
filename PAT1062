@@ -1,39 +1,40 @@
 #include <stdio.h>
+#define SWAP(A,B) {int ex=A;A=B;B=ex;}//考虑到两个分数是降序排列
 
 int max_common_division(int m,int n){
-	if(n==0){
-		return m;
-	}
-	else{
-		max_common_division(n,m%n);
-	}
+    if(n==0){
+        return m;
+    }
+    else{
+        max_common_division(n,m%n);
+    }
 }
 int main(void){
-	int back_molecule,back_denominator;
-	int front_molecule,front_denominator;
-	int intermediate_denominator;
-	int counter=0;
-	
-	scanf("%d%*c%d",&back_molecule,&back_denominator);
-	scanf("%d%*c%d",&front_molecule,&front_denominator);
-	scanf("%d",&intermediate_denominator);
-	int start=intermediate_denominator*back_molecule/back_denominator;
-	int finish=intermediate_denominator*front_molecule/front_denominator;
-	if(intermediate_denominator*front_molecule%front_denominator==0){
-		finish--;
-	}
-	for(int i=start+1;i<=finish;i++)
-			{
-				int max_common_divisor=max_common_division(i,intermediate_denominator);
-				if(max_common_divisor!=1){
-					continue;
-				}
-				counter++;
-				if(counter!=1){
-					printf(" %d/%d",i,intermediate_denominator);
-				}
-				else{
-					printf("%d/%d",i,intermediate_denominator);	
-				}
-			}
+    int back_molecule,back_denominator;
+    int front_molecule,front_denominator;
+    int intermediate_denominator;
+    int counter=0;
+
+    scanf("%d%*c%d",&back_molecule,&back_denominator);
+    scanf("%d%*c%d",&front_molecule,&front_denominator);
+    scanf("%d",&intermediate_denominator);
+    if(front_molecule*back_denominator<front_denominator*back_molecule){
+        SWAP(front_denominator,back_denominator);
+        SWAP(front_molecule,back_molecule);
+    }
+    int start=(intermediate_denominator*back_molecule)/back_denominator+1;
+    for(int i=start;i*front_denominator<intermediate_denominator*front_molecule;i++)
+    {
+        int max_common_divisor=max_common_division(i,intermediate_denominator);
+        if(max_common_divisor!=1){
+            continue;
+        }
+        counter++;
+        if(counter!=1){
+            printf(" %d/%d",i,intermediate_denominator);
+        }
+        else{
+            printf("%d/%d",i,intermediate_denominator);
+        }
+    }
 }
