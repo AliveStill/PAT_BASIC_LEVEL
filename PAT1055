@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+
+typedef struct {
+    char name[9];
+    int  height;
+}Tstudent;
+
+Tstudent *a;
+int column;
+int row;
+int sum;
+
+int compare(const void *a,const void *b){
+    if((*(Tstudent *)a).height==(*(Tstudent*)b).height){
+        return strcmp((*(Tstudent*)a).name,(*(Tstudent*)b).name);
+    }
+    else{
+        return (*(Tstudent *)b).height-(*(Tstudent *)a).height;
+    }
+}
+
+void theLast(int n){
+    if(n%2==0){
+        for(int i=n-1;i>0;i-=2){
+            printf("%s ",a[i].name);
+        }
+        for(int i=0;i<n;i+=2){
+           if(i){
+               printf(" %s",a[i].name);
+           }
+           else{
+               printf("%s",a[i].name);
+           }
+        }
+    }
+    else{
+        if(n==1){
+            printf("%s",a[0].name);
+            return ;
+        }
+        else{
+            for(int i=n-2;i>0;i-=2){
+                printf("%s ",a[i].name);
+            }
+            for(int i=0;i<n;i+=2){
+                if(i){
+                    printf(" %s",a[i].name);
+                }
+                else{
+                    printf("%s",a[i].name);
+                }
+            }
+        }
+    }
+}
+
+
+void isOdd(void){
+    if(sum<=column){
+        return ;
+    }
+    int start=sum%column+column;
+    for(int i=0;start<sum;i++){
+        puts("");
+        for(int j=start+column-2;j>start;j-=2){
+            printf("%s ",a[j].name);
+        }
+        for(int j=start;j<start+column;j+=2){
+            if(j!=start){
+                printf(" %s",a[j].name);
+            }
+            else{
+                printf("%s",a[j].name);
+            }
+        }
+        start+=column;
+    }
+}
+
+
+void isEven(void){
+    if(sum<=column){
+        return ;
+    }
+    int start=sum%column+column;
+    for(int i=0;start<sum;i++){
+        puts("");
+        for(int j=start+column-1;j>start;j-=2){
+            printf("%s ",a[j].name);
+        }
+        for(int j=start;j<start+column-1;j+=2){
+            if(j!=start){
+                printf(" %s",a[j].name);
+            }
+            else{
+                printf("%s",a[j].name);
+            }
+        }
+        start+=column;
+    }
+}
+
+
+int main() {
+
+    scanf("%d%d%*c",&sum,&row);
+    column=sum/row;
+    a=(Tstudent *)malloc(sizeof(Tstudent)*sum);
+    assert(a);
+    for(int i=0;i<sum;i++){
+        scanf("%s%d%*c",a[i].name,&(a[i].height));
+    }
+    qsort(a,(size_t)sum,sizeof(Tstudent),compare);
+    theLast((sum>column)?(sum%row+column):sum);
+    if(column%2==0){
+        isEven();
+    }
+    else{
+        isOdd();
+    }
+    return 0;
+}
