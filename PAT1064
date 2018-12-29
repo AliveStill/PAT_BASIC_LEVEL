@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+int compare(const void *a,const void *b){
+    return *(int *)a-*(int *)b;
+}//升序排列
+
+int main() {
+    int n;
+    int *a;
+    int count=0;
+
+    scanf("%d",&n);
+    a=(int *)malloc(sizeof(int )*n);
+    for(int i=0;i<n;i++){
+        int sum,number=0;
+        scanf("%d",&sum);
+        while(sum>0){
+            number+=sum%10;
+            sum/=10;
+        }
+        a[count++]=number;
+    }
+    qsort(a,(size_t)count,sizeof(int),compare);
+    for(int i=0;i<n-1;i++){
+        if(a[i]==a[i+1]){
+            a[i]=0;
+            count--;
+        }
+    }
+    printf("%d\n",count);
+    for(int i=0;i<n;i++){
+        if(count!=1&&a[i]){
+            printf("%d ",a[i]);
+            count--;
+        }else if(a[i]){
+            printf("%d",a[i]);
+        }
+    }
+    free(a);
+
+    return 0;
+}
