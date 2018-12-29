@@ -1,0 +1,129 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <ctype.h>
+#include <stdbool.h>
+
+
+typedef struct{
+    int label;
+    double score;
+    int countStandardOptions;
+    int countOptions;
+    int standardOptions[5];
+    int standardIndex[5];
+    int wrongMax;
+}judgements;
+
+typedef struct{
+    int countStudentOptions;
+    double grades;
+    int options[5];
+}students;
+
+judgements a[100]={{0.0,0,0,{0,0,0,0,0},{0,0,0,0,0}}};//初始化操作
+students b[1000]={{0,0.0,{0,0,0,0,0}}};
+
+
+int compare(const void *a,const void *b){
+    int x=(*(judgements *)b).wrongMax-(*(judgements *)a).wrongMax;
+    if(x){//如果值不相同
+        return  x;
+    }else{
+        return (*(judgements *)a).label-(*(judgements *)b).label;
+    }
+
+}//否则按照编号按照升序排列
+
+int main() {
+    int countJudges, countStudents;
+    bool flagSimple=true;
+
+
+    scanf("%d%d%*c",&countStudents,&countJudges);
+    for(int i=0;i<countJudges;i++){
+        a[i].label=i+1;
+    }//初始化最终的结果结构体数组，用于保存错误答案
+    for(int i=0;i<countJudges;i++){
+        scanf("%lf%d%d%*c",&(a[i].score),&(a[i].countOptions),
+              &(a[i].countStandardOptions));
+        char ch;
+        while((ch=getchar())!='\n'){
+            if(isalpha(ch)){
+                a[i].standardOptions[tolower(ch)-'a']=1;//以其状态表示正确与否，正确为1，不正确为0
+            }
+        }
+    }//读入选择题答案并进行评估
+    for(int i=0;i<countStudents;i++){
+        for(int j=0;j<countJudges;j++) {
+            char ch;
+            ch=getchar();
+            while (ch!='(') {
+                ch=getchar();
+            }
+            int count=0,k=0;
+            ch=getchar();
+            if(isdigit(ch)){
+                count=ch-'0';
+                k=count;
+            }
+            else{
+                exit(0);
+            }
+            b[i].countStudentOptions=count;
+            while(k>0){
+                ch=getchar();
+                if(isalpha(ch)){
+                    b[i].options[ch-'a']=1;
+                    k--;
+                }
+            }
+            int flag=true;
+            for(int w=0;w<5;w++){
+                if(b[i].options[w]==a[j].standardOptions[w]){
+                    ;
+                }
+                else{
+                    a[j].standardIndex[w]++;
+                    flagSimple=false;
+                    if(b[i].options[w]==0&&a[j].standardOptions[w]==1){
+                        ;//表示漏选的情况
+                    }
+                    else{
+                        flag=false;
+                    }
+                }
+            }
+            if(flag){
+                b[i].grades+=(b[i].countStudentOptions==a[j].countStandardOptions)?a[j].score:a[j].score/2;
+            }
+            for(int w=0;w<5;w++){//实现一个三目运算
+                a[j].wrongMax=w?
+                        ((a[j].standardIndex[w]>a[j].wrongMax)?a[j].standardIndex[w]:a[j].wrongMax)
+                                :a[j].standardIndex[0];//记录下错误次数最高的选项的值就能表明这道题错的个数
+                b[i].options[w]=0;
+            }
+        }
+    }//读入学生选择题选项
+    for(int i=0;i<countStudents;i++){
+        if(i){
+            puts("");
+        }
+        printf("%.1lf",b[i].grades);
+    }
+    if(flagSimple){
+        printf("\nToo simple");
+        exit(0);
+    }
+    qsort(a,(size_t)countJudges,sizeof(judgements),compare);
+    int standard=a[0].wrongMax;
+    for(int i=0;standard==a[i].wrongMax;i++){
+        for(int j=0;j<5;j++){
+            if(a[i].standardIndex[j]==standard){
+                printf("\n%d %d-%c",standard,a[i].label,'a'+j);
+            }
+        }
+    }
+
+    return 0;
+}
