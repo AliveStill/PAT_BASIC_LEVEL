@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <stdbool.h>
+
+typedef struct{
+    int pair1;
+    int pair2;
+}pairs;
+
+pairs *a;
+
+int cmpPairs(const void *a,const void *b){
+    return (*(pairs*)a).pair1-(*(pairs*)b).pair1;
+}//降序排列
+
+int cmpGuests(const void *a,const void *b){
+    return *(int *)a-*(int *)b;
+}
+
+pairs *search(pairs *a,int n,int key){
+    int upper=n-1,lower=0;
+    while(upper>=lower){
+        int meddle=(upper+lower)/2;
+        if(a[meddle].pair1==key){
+            return &a[meddle];
+        }
+        else if(a[meddle].pair1>key){
+            upper=meddle-1;
+        }
+        else{
+            lower=meddle+1;
+        }
+    }
+    return NULL;
+}
+
+int main() {
+    int countPairs,countGuests;
+    int count=0;
+    int *readGuests,*index;
+    bool flag=true;
+
+    scanf("%d",&countPairs);
+    a=(pairs *)malloc(sizeof(pairs)*2*countPairs);
+    assert(a);
+    for(int i=0;i<countPairs;i++){
+        int x,y;
+        scanf("%d%d",&x,&y);
+        a[i*2].pair1=x;a[i*2].pair2=y;
+        a[i*2+1].pair1=y;a[i*2+1].pair2=x;
+    }//读入伴侣数据
+    qsort(a,(size_t)countPairs*2,sizeof(pairs),cmpPairs);
+
+    scanf("%d",&countGuests);
+    readGuests=(int *)malloc(sizeof(int )*countGuests);
+    assert(readGuests);
+    index=(int *)malloc(sizeof(int)*countGuests);
+    assert(index);
+    for(int i=0;i<countGuests;i++){
+        scanf("%d",&(readGuests[i]));
+        index[i]=0;
+    }//读入赴宴人编号
+    qsort(readGuests,(size_t)countGuests,sizeof(int),cmpGuests);
+
+    count=0;
+    for(int i=0;i<countGuests;i++){
+        pairs *partyCheck=search(a,countPairs*2,readGuests[i]);
+        if(partyCheck){
+            int *alterEOF=bsearch(&(partyCheck->pair2),readGuests,(size_t)countGuests,sizeof(int),cmpGuests);
+            if(alterEOF){//在副本中检索
+                index[i]=1;
+            }
+            else{
+                count++;
+            }
+        }
+        else{
+            count++;
+        }
+    }
+    printf("%d\n",count);
+    if(count){
+        for(int i=0;i<countGuests;i++){
+            if(index[i]==0){
+                flag?flag=false:printf(" ");
+                printf("%05d",readGuests[i]);
+            }
+        }
+    }
+    free(a);
+    free(readGuests);
+    free(index);
+
+    return 0;
+}
