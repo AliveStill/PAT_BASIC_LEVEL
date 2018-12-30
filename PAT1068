@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdbool.h>
+
+int cols,rows,distance;
+int a[1000][1000]={0,};//统一成三个大数组，分别保存数据，行正确，列正确
+
+bool isUnique(int a[1000][1000],int key,int keyrow,int keycol){
+    for(int i=0;i<rows;i++){
+        for(int j=0;j<cols;j++){
+            if(a[i][j]==key&&(i!=keyrow||j!=keycol)){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
+bool judgeCube(int a[1000][1000],int key,int keyx,int keyy,
+        int startx,int starty,int endx,int endy){
+    for(int i=startx;i<=endx;i++){
+        for(int j=starty;j<=endy;j++){
+            if(abs(a[i][j]-key)<=distance&&(i!=keyx||j!=keyy)){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+int main() {
+    int count=0;
+    int flagx,flagy;
+    bool flag;
+
+    scanf("%d%d%d",&cols,&rows,&distance);//首先保留一行一列的特殊情况
+    for(int i=0;i<rows;i++){
+        for(int j=0;j<cols;j++){
+            scanf("%d",&(a[i][j]));
+        }
+    }
+    for(int i=0;i<rows;i++){
+        for(int j=0;j<cols;j++){
+            flag=false;
+            if(i==0&&j==0&&judgeCube(a,a[i][j],i,j,0,0,1,1)){
+                flag=true;
+            }else if(i==0&&j==cols-1&&judgeCube(a,a[i][j],i,j,0,cols-2,1,cols-1)){
+                flag=1;
+            }else if(i==rows-1&&j==0&&judgeCube(a,a[i][j],i,j,rows-2,0,rows-1,1)){
+                flag=true;
+            }else if(i==rows-1&&j==cols-1&&judgeCube(a,a[i][j],i,j,rows-2,cols-2,rows-1,cols-1)){
+                flag=true;
+            }else if(i==0&&judgeCube(a,a[i][j],i,j,i,j-1,i+1,j+1)){
+                flag=true;
+            }else if(j==0&&judgeCube(a,a[i][j],i,j,i-1,j,i+1,j+1)){
+                flag=true;
+            }else if(i==rows-1&&judgeCube(a,a[i][j],i,j,i-1,j-1,i,j+1)){
+                flag=true;
+            }else if(j==cols-1&&judgeCube(a,a[i][j],i,j,i-1,j-1,i+1,j)){
+                flag=true;
+            }else{
+                if(judgeCube(a,a[i][j],i,j,i-1,j-1,i+1,j+1)){
+                    flag=true;
+                }
+            }
+            if(flag&&isUnique(a,a[i][j],i,j)){
+                count++;
+                flagx=i;
+                flagy=j;
+            }
+        }
+    }
+
+    if(count==0){
+        printf("Not Exist");
+    }else if(count==1){
+        printf("(%d, %d): %d",flagy+1,flagx+1,a[flagx][flagy]);
+    }else if(count>=2){
+        printf("Not Unique");
+    }
+    return 0;
+}
