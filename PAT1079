@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+
+bool judge(char *,int ,int );
+
+int main(void) {
+    char a[1021]={'\0',},b[1021]={'\0',},ch;
+    int highBits,len;//记录最高位的位置,获取初始字符的位数
+
+    gets(b);
+    len=strlen(b);
+    highBits=1021-len;
+    for(int i=1020;i>1020-len;i--){
+        a[i]=b[len+i-1021];
+    }//成功读入数据
+    if(judge(a,highBits,1020)){
+        for(int j=highBits;j<1021;j++){
+            printf("%c",a[j]);
+        }
+        printf(" is a palindromic number.");
+        exit(0);
+    }
+    for(int i=0;i<10;i++){
+        if(i){
+            puts("");
+        }
+        for(int j=highBits;j<1021;j++){
+            b[j]=a[1020-(j-highBits)];
+        }
+        for(int j=highBits;j<1021;j++){
+            printf("%c",a[j]);
+        }
+        printf(" + ");
+        for(int j=highBits;j<1021;j++){
+            printf("%c",b[j]);
+        }
+        int remainder=0,j;
+        for(j=1020;j>=0;j--){
+            if(j<highBits&&remainder==0){
+                break;
+            }
+            if(a[j]=='\0'){
+                a[j]=b[j]='0';
+            }
+            int k=remainder;
+            remainder=(a[j]-'0'+b[j]-'0'+remainder)/10;
+            a[j]=(a[j]-'0'+b[j]-'0'+k)%10+'0';
+        }
+        printf(" = ");
+        highBits=j+1;
+        for(int j=highBits;j<1021;j++){
+            printf("%c",a[j]);
+        }
+        if(judge(a,highBits,1020)){
+            puts("");
+            for(int j=highBits;j<1021;j++){
+                printf("%c",a[j]);
+            }
+            printf(" is a palindromic number.");
+            exit(0);
+        }
+    }
+
+    printf("\nNot found in 10 iterations.");
+
+    return 0;
+}
+
+
+bool judge(char *a,int start,int end) {//假定n为最高有效位数
+    for (int i = start; i <= (start+end) / 2 ; i++) {
+        if (a[i] != a[start+end-i]) {
+            return false;
+        }
+    }
+    return true;
+}
