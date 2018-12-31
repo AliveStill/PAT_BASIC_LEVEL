@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <math.h>
+#include <stdlib.h>
+
+int main() {
+    int n,countLiar=0;
+    int read[100],pred[100],liar[100]={0,};
+
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        scanf("%d",&(read[i]));
+        pred[i]=1;
+    }
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<n;j++){
+            pred[i]=-1;pred[j]=-1;//标识狼人的位置
+            for(int k=0;k<n;k++){
+                if(pred[abs(read[k])-1]*read[k]<0){
+                    liar[k]=1;
+                    countLiar++;
+                }
+            }
+            if(countLiar==2){
+                int count=0;
+                for(int k=0;k<n;k++){
+                    if(liar[k]==1&&pred[k]==-1){
+                        count++;
+                    }
+                }
+                if(count==1){
+                    printf("%d %d",i+1,j+1);
+                    exit(0);
+                }
+            }
+            pred[i]=1;pred[j]=1;countLiar=0;
+            for(int k=0;k<n;k++){
+                liar[k]=0;
+            }
+        }
+    }
+    printf("No Solution");
+
+    return 0;
+}
