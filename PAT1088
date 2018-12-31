@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+
+char str[3][6]={" Cong"," Ping"," Gai"};
+
+int main() {
+    int first,second,myCap,x,y;
+    double m;
+
+    scanf("%d%d%d",&myCap,&x,&y);
+    for(first=99;first>=10;first--){
+        second=first%10*10+first/10;
+        if(abs(first-second)*y==second*x){
+            m=(double)second/y;
+            break;
+        }
+    }
+
+    if(first==9){
+        printf("No Solution");
+        exit(0);
+    }
+
+    printf("%d",first);
+    if(myCap>first){
+        printf("%s",str[2]);
+    }else if(myCap==first){
+        printf("%s",str[1]);
+    }else{
+        printf("%s",str[0]);
+    }
+
+    if(myCap>second){
+        printf("%s",str[2]);
+    }else if(myCap==second){
+        printf("%s",str[1]);
+    }else{
+        printf("%s",str[0]);
+    }
+
+    if(myCap>floor(m)){
+        printf("%s",str[2]);
+    }else if(fabs(myCap-m)<1e-2){
+        printf("%s",str[1]);
+    }else{
+        printf("%s",str[0]);
+    }
+    return 0;
+}
